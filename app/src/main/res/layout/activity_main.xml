@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBckg"
+    android:padding="10sp"
+    tools:context="com.blind.wakemeup.MainActivity">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/citiesLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="10dp" />
+
+
+        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            app:justifyContent="space_around">
+
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/cWeatherSumLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ico_weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:scaleType="center"
+                    android:src="@drawable/clear_d" />
+
+                <TextView
+                    android:id="@+id/weatherDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:gravity="fill"
+                    android:text="xxx"
+                    android:textColor="@color/colorFontSecondary"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/tempsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_flexGrow="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/cTempValueLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tempValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:text="x"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/colorFontPrimary"
+                            android:textSize="90sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tempUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/colorFontSecondary"
+                            android:textSize="90sp"
+                            android:textStyle="bold"
+                            tools:text="°C" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/cTempMinMaxFeelLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="true"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/tempMinMaxLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:divider="@drawable/empty_h_divider"
+                            android:orientation="horizontal"
+                            android:showDividers="middle">
+
+                            <TextView
+                                android:id="@+id/tempMinValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="fill"
+                                android:includeFontPadding="false"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/colorFontSecondary"
+                                android:textSize="40sp"
+                                tools:text="x" />
+
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/colorFontSecondary" />
+
+                            <TextView
+                                android:id="@+id/tempMaxValue"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:textAlignment="viewStart"
+                                android:textColor="@color/colorFontSecondary"
+                                android:textSize="40sp"
+                                android:textStyle="bold"
+                                tools:text="x" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/tempFeelLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/tempFeelValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="fill"
+                                android:includeFontPadding="false"
+                                android:text="xxx"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/colorFontSecondary"
+                                android:textSize="40sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/tempValueImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:scaleType="center"
+                    android:src="@drawable/temp_value" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/rainSnowLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:flexDirection="column"
+                    app:justifyContent="center"
+                    app:showDivider="middle"
+                    app:dividerDrawable="@drawable/empty_v_divider">
+
+                <LinearLayout
+                    android:id="@+id/rainLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/rainValueImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/rain_value" />
+
+                    <LinearLayout
+                        android:id="@+id/rainValueLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/rainValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:includeFontPadding="false"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="0dp"
+                            android:text="x"
+                            android:textColor="@color/colorFontPrimary"
+                            android:textSize="40sp" />
+
+                        <TextView
+                            android:id="@+id/rainUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:includeFontPadding="false"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:text="%"
+                            android:textColor="@color/colorFontSecondary"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/snowLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/snowValueImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/snow_value" />
+
+                    <LinearLayout
+                        android:id="@+id/snowValueLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/snowValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:includeFontPadding="false"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="0dp"
+                            android:text="x"
+                            android:textColor="@color/colorFontPrimary"
+                            android:textSize="40sp" />
+
+                        <TextView
+                            android:id="@+id/snowUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:includeFontPadding="false"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:text="%"
+                            android:textColor="@color/colorFontSecondary"
+                            android:textSize="20sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/bottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:alignContent="flex_end"
+            app:alignItems="flex_end"
+            app:flexDirection="row"
+            app:justifyContent="space_between">
+
+            <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/cdtLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:alignContent="center"
+                app:alignItems="baseline"
+                app:dividerDrawable="@drawable/empty_v_divider"
+                app:flexDirection="column"
+                app:showDivider="middle">
+
+
+                <LinearLayout
+                    android:id="@+id/cdLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ctDayValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="xx:xx:xx"
+                        android:textColor="@color/colorFontPrimary"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ctDateValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="xx:xx:xx"
+                        android:textColor="@color/colorFontSecondary"
+                        android:textSize="40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ctLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/ctTimeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="XX:XX"
+                        android:textColor="@color/colorFontPrimary"
+                        android:textSize="90sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ctTimeSecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="XX"
+                        android:textColor="@color/colorFontSecondary"
+                        android:textSize="70sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+            <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/forecastLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:alignContent="center"
+                app:alignItems="baseline"
+                app:dividerDrawable="@drawable/empty_v_divider"
+                app:flexDirection="row"
+                app:showDivider="middle">
+
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

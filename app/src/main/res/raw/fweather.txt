@@ -1,0 +1,1170 @@
+{
+  "Headline": {
+    "EffectiveDate": "2018-02-07T07:00:00-05:00",
+    "EffectiveEpochDate": 1518004800,
+    "Severity": 4,
+    "Text": "Becoming noticeably milder tomorrow",
+    "Category": "snow",
+    "EndDate": "2018-02-08T07:00:00-05:00",
+    "EndEpochDate": 1518091200,
+    "MobileLink": "http://m.accuweather.com/en/us/boston-ma/02108/extended-weather-forecast/348735?unit=c&lang=en-us",
+    "Link": "http://www.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?unit=c&lang=en-us"
+  },
+  "DailyForecasts": [
+    {
+      "Date": "2018-02-03T07:00:00-05:00",
+      "EpochDate": 1517659200,
+      "Sun": {
+        "Rise": "2018-02-03T06:56:00-05:00",
+        "EpochRise": 1517658960,
+        "Set": "2018-02-03T17:01:00-05:00",
+        "EpochSet": 1517695260
+      },
+      "Moon": {
+        "Rise": "2018-02-03T20:53:00-05:00",
+        "EpochRise": 1517709180,
+        "Set": "2018-02-04T09:27:00-05:00",
+        "EpochSet": 1517754420,
+        "Phase": "WaningGibbous",
+        "Age": 17
+      },
+      "Temperature": {
+        "Minimum": {
+          "Value": -4.7,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -2.1,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperature": {
+        "Minimum": {
+          "Value": -10.6,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -7.7,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperatureShade": {
+        "Minimum": {
+          "Value": -10.6,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -7.8,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "HoursOfSun": 9.1,
+      "DegreeDaySummary": {
+        "Heating": {
+          "Value": 21,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Cooling": {
+          "Value": 0,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "AirAndPollen": [
+        {
+          "Name": "AirQuality",
+          "Value": 26,
+          "Category": "Good",
+          "CategoryValue": 1,
+          "Type": "Particle Pollution"
+        },
+        {
+          "Name": "Grass",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Mold",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Ragweed",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Tree",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "UVIndex",
+          "Value": 3,
+          "Category": "Moderate",
+          "CategoryValue": 2
+        }
+      ],
+      "Day": {
+        "Icon": 1,
+        "IconPhrase": "Sunny",
+        "ShortPhrase": "Plenty of sunshine",
+        "LongPhrase": "Plenty of sunshine",
+        "PrecipitationProbability": 0,
+        "ThunderstormProbability": 0,
+        "RainProbability": 0,
+        "SnowProbability": 0,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 18.5,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 229,
+            "Localized": "SW",
+            "English": "SW"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 27.8,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 226,
+            "Localized": "SW",
+            "English": "SW"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 0,
+        "HoursOfRain": 0,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 10
+      },
+      "Night": {
+        "Icon": 38,
+        "IconPhrase": "Mostly cloudy",
+        "ShortPhrase": "Increasing cloudiness",
+        "LongPhrase": "Increasing cloudiness",
+        "PrecipitationProbability": 0,
+        "ThunderstormProbability": 0,
+        "RainProbability": 0,
+        "SnowProbability": 0,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 16.7,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 202,
+            "Localized": "SSW",
+            "English": "SSW"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 24.1,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 196,
+            "Localized": "SSW",
+            "English": "SSW"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 0,
+        "HoursOfRain": 0,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 59
+      },
+      "Sources": [
+        "AccuWeather"
+      ],
+      "MobileLink": "http://m.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=1&unit=c&lang=en-us",
+      "Link": "http://www.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=1&unit=c&lang=en-us"
+    },
+    {
+      "Date": "2018-02-04T07:00:00-05:00",
+      "EpochDate": 1517745600,
+      "Sun": {
+        "Rise": "2018-02-04T06:55:00-05:00",
+        "EpochRise": 1517745300,
+        "Set": "2018-02-04T17:02:00-05:00",
+        "EpochSet": 1517781720
+      },
+      "Moon": {
+        "Rise": "2018-02-04T22:00:00-05:00",
+        "EpochRise": 1517799600,
+        "Set": "2018-02-05T09:57:00-05:00",
+        "EpochSet": 1517842620,
+        "Phase": "WaningGibbous",
+        "Age": 18
+      },
+      "Temperature": {
+        "Minimum": {
+          "Value": 0.7,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": 6.2,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperature": {
+        "Minimum": {
+          "Value": -3.7,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": 1.5,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperatureShade": {
+        "Minimum": {
+          "Value": -3.7,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": 2.2,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "HoursOfSun": 0.2,
+      "DegreeDaySummary": {
+        "Heating": {
+          "Value": 15,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Cooling": {
+          "Value": 0,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "AirAndPollen": [
+        {
+          "Name": "AirQuality",
+          "Value": 25,
+          "Category": "Good",
+          "CategoryValue": 1,
+          "Type": "Particle Pollution"
+        },
+        {
+          "Name": "Grass",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Mold",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Ragweed",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Tree",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "UVIndex",
+          "Value": 1,
+          "Category": "Low",
+          "CategoryValue": 1
+        }
+      ],
+      "Day": {
+        "Icon": 12,
+        "IconPhrase": "Showers",
+        "ShortPhrase": "A touch of afternoon rain",
+        "LongPhrase": "Cloudy and not as cold; a little afternoon rain",
+        "PrecipitationProbability": 56,
+        "ThunderstormProbability": 0,
+        "RainProbability": 56,
+        "SnowProbability": 10,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 18.5,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 178,
+            "Localized": "S",
+            "English": "S"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 25.9,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 157,
+            "Localized": "SSE",
+            "English": "SSE"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 2,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 2,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 1,
+        "HoursOfRain": 1,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 99
+      },
+      "Night": {
+        "Icon": 18,
+        "IconPhrase": "Rain",
+        "ShortPhrase": "Rain tapering off",
+        "LongPhrase": "Rain tapering off",
+        "PrecipitationProbability": 92,
+        "ThunderstormProbability": 3,
+        "RainProbability": 92,
+        "SnowProbability": 0,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 18.5,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 191,
+            "Localized": "S",
+            "English": "S"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 29.6,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 262,
+            "Localized": "W",
+            "English": "W"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 5,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 5,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 4,
+        "HoursOfRain": 4,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 79
+      },
+      "Sources": [
+        "AccuWeather"
+      ],
+      "MobileLink": "http://m.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=2&unit=c&lang=en-us",
+      "Link": "http://www.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=2&unit=c&lang=en-us"
+    },
+    {
+      "Date": "2018-02-05T07:00:00-05:00",
+      "EpochDate": 1517832000,
+      "Sun": {
+        "Rise": "2018-02-05T06:54:00-05:00",
+        "EpochRise": 1517831640,
+        "Set": "2018-02-05T17:03:00-05:00",
+        "EpochSet": 1517868180
+      },
+      "Moon": {
+        "Rise": "2018-02-05T23:04:00-05:00",
+        "EpochRise": 1517889840,
+        "Set": "2018-02-06T10:27:00-05:00",
+        "EpochSet": 1517930820,
+        "Phase": "WaningGibbous",
+        "Age": 19
+      },
+      "Temperature": {
+        "Minimum": {
+          "Value": -6.2,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": 3.3,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperature": {
+        "Minimum": {
+          "Value": -11.2,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -4.9,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperatureShade": {
+        "Minimum": {
+          "Value": -11.2,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -4.2,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "HoursOfSun": 7.9,
+      "DegreeDaySummary": {
+        "Heating": {
+          "Value": 19,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Cooling": {
+          "Value": 0,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "AirAndPollen": [
+        {
+          "Name": "AirQuality",
+          "Value": 25,
+          "Category": "Good",
+          "CategoryValue": 1,
+          "Type": "Particle Pollution"
+        },
+        {
+          "Name": "Grass",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Mold",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Ragweed",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Tree",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "UVIndex",
+          "Value": 3,
+          "Category": "Moderate",
+          "CategoryValue": 2
+        }
+      ],
+      "Day": {
+        "Icon": 2,
+        "IconPhrase": "Mostly sunny",
+        "ShortPhrase": "Mostly sunny; winds subsiding",
+        "LongPhrase": "Partly to mostly sunny with winds gradually subsiding",
+        "PrecipitationProbability": 8,
+        "ThunderstormProbability": 0,
+        "RainProbability": 6,
+        "SnowProbability": 0,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 33.3,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 279,
+            "Localized": "W",
+            "English": "W"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 61.1,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 283,
+            "Localized": "WNW",
+            "English": "WNW"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 0,
+        "HoursOfRain": 0,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 18
+      },
+      "Night": {
+        "Icon": 34,
+        "IconPhrase": "Mostly clear",
+        "ShortPhrase": "Mainly clear",
+        "LongPhrase": "Mainly clear",
+        "PrecipitationProbability": 2,
+        "ThunderstormProbability": 0,
+        "RainProbability": 0,
+        "SnowProbability": 2,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 16.7,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 259,
+            "Localized": "W",
+            "English": "W"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 25.9,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 269,
+            "Localized": "W",
+            "English": "W"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 0,
+        "HoursOfRain": 0,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 21
+      },
+      "Sources": [
+        "AccuWeather"
+      ],
+      "MobileLink": "http://m.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=3&unit=c&lang=en-us",
+      "Link": "http://www.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=3&unit=c&lang=en-us"
+    },
+    {
+      "Date": "2018-02-06T07:00:00-05:00",
+      "EpochDate": 1517918400,
+      "Sun": {
+        "Rise": "2018-02-06T06:53:00-05:00",
+        "EpochRise": 1517917980,
+        "Set": "2018-02-06T17:05:00-05:00",
+        "EpochSet": 1517954700
+      },
+      "Moon": {
+        "Rise": null,
+        "EpochRise": null,
+        "Set": "2018-02-06T10:27:00-05:00",
+        "EpochSet": 1517930820,
+        "Phase": "WaningGibbous",
+        "Age": 20
+      },
+      "Temperature": {
+        "Minimum": {
+          "Value": -1.4,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": 2.3,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperature": {
+        "Minimum": {
+          "Value": -4.7,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -0.8,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperatureShade": {
+        "Minimum": {
+          "Value": -4.7,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": 0,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "HoursOfSun": 2.3,
+      "DegreeDaySummary": {
+        "Heating": {
+          "Value": 18,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Cooling": {
+          "Value": 0,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "AirAndPollen": [
+        {
+          "Name": "AirQuality",
+          "Value": 0,
+          "Category": "Good",
+          "CategoryValue": 1,
+          "Type": "Ozone"
+        },
+        {
+          "Name": "Grass",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Mold",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Ragweed",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Tree",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "UVIndex",
+          "Value": 2,
+          "Category": "Low",
+          "CategoryValue": 1
+        }
+      ],
+      "Day": {
+        "Icon": 6,
+        "IconPhrase": "Mostly cloudy",
+        "ShortPhrase": "Mainly cloudy",
+        "LongPhrase": "Mainly cloudy",
+        "PrecipitationProbability": 11,
+        "ThunderstormProbability": 0,
+        "RainProbability": 4,
+        "SnowProbability": 9,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 13,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 218,
+            "Localized": "SW",
+            "English": "SW"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 20.4,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 220,
+            "Localized": "SW",
+            "English": "SW"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 0,
+        "HoursOfRain": 0,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 78
+      },
+      "Night": {
+        "Icon": 38,
+        "IconPhrase": "Mostly cloudy",
+        "ShortPhrase": "Mainly cloudy",
+        "LongPhrase": "Mainly cloudy",
+        "PrecipitationProbability": 25,
+        "ThunderstormProbability": 0,
+        "RainProbability": 6,
+        "SnowProbability": 11,
+        "IceProbability": 13,
+        "Wind": {
+          "Speed": {
+            "Value": 13,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 177,
+            "Localized": "S",
+            "English": "S"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 18.5,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 187,
+            "Localized": "S",
+            "English": "S"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 0,
+        "HoursOfRain": 0,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 87
+      },
+      "Sources": [
+        "AccuWeather"
+      ],
+      "MobileLink": "http://m.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=4&unit=c&lang=en-us",
+      "Link": "http://www.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=4&unit=c&lang=en-us"
+    },
+    {
+      "Date": "2018-02-07T07:00:00-05:00",
+      "EpochDate": 1518004800,
+      "Sun": {
+        "Rise": "2018-02-07T06:52:00-05:00",
+        "EpochRise": 1518004320,
+        "Set": "2018-02-07T17:06:00-05:00",
+        "EpochSet": 1518041160
+      },
+      "Moon": {
+        "Rise": "2018-02-07T00:05:00-05:00",
+        "EpochRise": 1517979900,
+        "Set": "2018-02-07T10:58:00-05:00",
+        "EpochSet": 1518019080,
+        "Phase": "Last",
+        "Age": 21
+      },
+      "Temperature": {
+        "Minimum": {
+          "Value": -0.8,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": 6.2,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperature": {
+        "Minimum": {
+          "Value": -7.3,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -1.1,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "RealFeelTemperatureShade": {
+        "Minimum": {
+          "Value": -7.3,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Maximum": {
+          "Value": -0.4,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "HoursOfSun": 0.3,
+      "DegreeDaySummary": {
+        "Heating": {
+          "Value": 15,
+          "Unit": "C",
+          "UnitType": 17
+        },
+        "Cooling": {
+          "Value": 0,
+          "Unit": "C",
+          "UnitType": 17
+        }
+      },
+      "AirAndPollen": [
+        {
+          "Name": "AirQuality",
+          "Value": 0,
+          "Category": "Good",
+          "CategoryValue": 1,
+          "Type": "Ozone"
+        },
+        {
+          "Name": "Grass",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Mold",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Ragweed",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "Tree",
+          "Value": 0,
+          "Category": "Low",
+          "CategoryValue": 1
+        },
+        {
+          "Name": "UVIndex",
+          "Value": 1,
+          "Category": "Low",
+          "CategoryValue": 1
+        }
+      ],
+      "Day": {
+        "Icon": 29,
+        "IconPhrase": "Rain and snow",
+        "ShortPhrase": "Periods of snow, then rain",
+        "LongPhrase": "Periods of snow changing to rain",
+        "PrecipitationProbability": 76,
+        "ThunderstormProbability": 0,
+        "RainProbability": 57,
+        "SnowProbability": 68,
+        "IceProbability": 1,
+        "Wind": {
+          "Speed": {
+            "Value": 22.2,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 206,
+            "Localized": "SSW",
+            "English": "SSW"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 37,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 207,
+            "Localized": "SSW",
+            "English": "SSW"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 13,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 4,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 3,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 5.5,
+        "HoursOfRain": 2.5,
+        "HoursOfSnow": 3,
+        "HoursOfIce": 0,
+        "CloudCover": 99
+      },
+      "Night": {
+        "Icon": 12,
+        "IconPhrase": "Showers",
+        "ShortPhrase": "Cloudy with showers around",
+        "LongPhrase": "Considerable cloudiness with a couple of showers",
+        "PrecipitationProbability": 61,
+        "ThunderstormProbability": 20,
+        "RainProbability": 61,
+        "SnowProbability": 26,
+        "IceProbability": 0,
+        "Wind": {
+          "Speed": {
+            "Value": 20.4,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 317,
+            "Localized": "NW",
+            "English": "NW"
+          }
+        },
+        "WindGust": {
+          "Speed": {
+            "Value": 31.5,
+            "Unit": "km/h",
+            "UnitType": 7
+          },
+          "Direction": {
+            "Degrees": 320,
+            "Localized": "NW",
+            "English": "NW"
+          }
+        },
+        "TotalLiquid": {
+          "Value": 2,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Rain": {
+          "Value": 2,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "Snow": {
+          "Value": 0,
+          "Unit": "cm",
+          "UnitType": 4
+        },
+        "Ice": {
+          "Value": 0,
+          "Unit": "mm",
+          "UnitType": 3
+        },
+        "HoursOfPrecipitation": 1.5,
+        "HoursOfRain": 1.5,
+        "HoursOfSnow": 0,
+        "HoursOfIce": 0,
+        "CloudCover": 99
+      },
+      "Sources": [
+        "AccuWeather"
+      ],
+      "MobileLink": "http://m.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=5&unit=c&lang=en-us",
+      "Link": "http://www.accuweather.com/en/us/boston-ma/02108/daily-weather-forecast/348735?day=5&unit=c&lang=en-us"
+    }
+  ]
+}
