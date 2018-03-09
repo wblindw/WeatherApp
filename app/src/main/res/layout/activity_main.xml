@@ -15,38 +15,50 @@
         app:flexWrap="wrap"
         app:justifyContent="space_between">
 
-        <LinearLayout
+        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/citiesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            app:justifyContent="space_around"/>
 
         <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:alignContent="stretch"
+            app:alignContent="space_around"
             app:alignItems="stretch"
             app:justifyContent="space_around">
 
-<<<<<<< HEAD
             <LinearLayout
                 android:id="@+id/cWeatherSumLayout"
-=======
-            <Space
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:id="@+id/ico_weather"
->>>>>>> 892b11b705f6d29d5886abf106f56fe3c255f204
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:scaleType="fitCenter"
-                android:src="@drawable/clear_d"
-                android:contentDescription=""/>
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ico_weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:scaleType="center"
+                    android:src="@drawable/clear_d" />
+
+                <TextView
+                    android:id="@+id/weatherDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:gravity="fill"
+                    android:text="xxx"
+                    android:textColor="@color/colorFontSecondary"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/tempsLayout"
@@ -120,7 +132,6 @@
                                 android:layout_gravity="fill"
                                 android:includeFontPadding="false"
                                 android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
                                 android:textColor="@color/colorFontSecondary"
                                 android:textSize="40sp"
                                 tools:text="x" />
@@ -149,28 +160,11 @@
                             android:id="@+id/tempFeelValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-<<<<<<< HEAD
                             android:layout_gravity="fill"
                             android:includeFontPadding="false"
                             android:text="xxx"
                             android:textColor="@color/colorFontSecondary"
                             android:textSize="40sp" />
-=======
-                            android:layout_gravity="end"
-                            android:orientation="horizontal">
-
-
-                            <TextView
-                                android:id="@+id/tempFeelValue"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="fill"
-                                android:includeFontPadding="false"
-                                android:text="xxx"
-                                android:textColor="@color/colorFontSecondary"
-                                android:textSize="40sp" />
-                        </LinearLayout>
->>>>>>> 892b11b705f6d29d5886abf106f56fe3c255f204
 
                     </com.google.android.flexbox.FlexboxLayout>
 
@@ -186,32 +180,16 @@
 
             </LinearLayout>
 
-<<<<<<< HEAD
             <com.google.android.flexbox.FlexboxLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/rainSnowLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:flexDirection="column"
-                    app:justifyContent="center"
-                    app:showDivider="middle"
-                    app:dividerDrawable="@drawable/empty_v_divider">
-=======
-            <Space
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
-
-            <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rainSnowLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:dividerDrawable="@drawable/empty_v_divider"
                 app:flexDirection="column"
                 app:justifyContent="center"
-                app:showDivider="middle">
->>>>>>> 892b11b705f6d29d5886abf106f56fe3c255f204
+                app:showDivider="middle"
+                app:dividerDrawable="@drawable/empty_v_divider">
 
                 <LinearLayout
                     android:id="@+id/rainLayout"
@@ -238,8 +216,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:includeFontPadding="false"
-                            android:paddingStart="5dp"
-                            android:paddingEnd="0dp"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="0dp"
                             android:text="x"
                             android:textColor="@color/colorFontPrimary"
                             android:textSize="40sp" />
@@ -250,8 +228,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:includeFontPadding="false"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="0dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
                             android:text="%"
                             android:textColor="@color/colorFontSecondary"
                             android:textSize="20sp" />
@@ -284,8 +262,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:includeFontPadding="false"
-                            android:paddingStart="5dp"
-                            android:paddingEnd="0dp"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="0dp"
                             android:text="x"
                             android:textColor="@color/colorFontPrimary"
                             android:textSize="40sp" />
@@ -310,13 +288,7 @@
 
         </com.google.android.flexbox.FlexboxLayout>
 
-<<<<<<< HEAD
         <com.google.android.flexbox.FlexboxLayout
-=======
-
-        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
->>>>>>> 892b11b705f6d29d5886abf106f56fe3c255f204
             android:id="@+id/bottomLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -325,99 +297,75 @@
             app:flexDirection="row"
             app:justifyContent="space_between">
 
-
             <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/cdtLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:flexWrap="nowrap"
-                app:justifyContent="space_between"
-                app:flexDirection="column">
+                android:layout_height="wrap_content"
+                app:alignContent="center"
+                app:alignItems="baseline"
+                app:dividerDrawable="@drawable/empty_v_divider"
+                app:flexDirection="column"
+                app:showDivider="middle">
 
-                <TextView
-                    android:id="@+id/weatherDesc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:gravity="fill"
-                    android:includeFontPadding="false"
-                    android:text="xxx"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorFontSecondary"
-                    android:textSize="24sp" />
 
-                <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/cdtLayout"
+                <LinearLayout
+                    android:id="@+id/cdLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:alignContent="center"
-                    app:alignItems="baseline"
-                    app:dividerDrawable="@drawable/empty_v_divider"
-                    app:flexDirection="column"
-                    app:showDivider="middle">
+                    android:orientation="horizontal">
 
-
-                    <LinearLayout
-                        android:id="@+id/cdLayout"
+                    <TextView
+                        android:id="@+id/ctDayValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:includeFontPadding="false"
+                        android:text="xx:xx:xx"
+                        android:textColor="@color/colorFontPrimary"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/ctDayValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text="xx:xx:xx"
-                            android:textColor="@color/colorFontPrimary"
-                            android:textSize="40sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/ctDateValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:text="xx:xx:xx"
-                            android:textColor="@color/colorFontSecondary"
-                            android:textSize="40sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ctLayout"
+                    <TextView
+                        android:id="@+id/ctDateValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:includeFontPadding="false"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="xx:xx:xx"
+                        android:textColor="@color/colorFontSecondary"
+                        android:textSize="40sp" />
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/ctTimeValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text="XX:XX"
-                            android:textColor="@color/colorFontPrimary"
-                            android:textSize="90sp"
-                            android:textStyle="bold" />
+                <LinearLayout
+                    android:id="@+id/ctLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/ctTimeSecValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text="XX"
-                            android:textColor="@color/colorFontSecondary"
-                            android:textSize="70sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/ctTimeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="XX:XX"
+                        android:textColor="@color/colorFontPrimary"
+                        android:textSize="90sp"
+                        android:textStyle="bold" />
 
-                </com.google.android.flexbox.FlexboxLayout>
-
+                    <TextView
+                        android:id="@+id/ctTimeSecValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="XX"
+                        android:textColor="@color/colorFontSecondary"
+                        android:textSize="70sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </com.google.android.flexbox.FlexboxLayout>
+
 
             <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -436,14 +384,7 @@
 
         </com.google.android.flexbox.FlexboxLayout>
 
-<<<<<<< HEAD
     </com.google.android.flexbox.FlexboxLayout>
-=======
-
-
-
-    </LinearLayout>
->>>>>>> 892b11b705f6d29d5886abf106f56fe3c255f204
 
 
 </android.support.constraint.ConstraintLayout>

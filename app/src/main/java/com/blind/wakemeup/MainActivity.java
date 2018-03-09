@@ -120,8 +120,8 @@ public class MainActivity extends Activity {
                 // Get weathers
                 for(Integer cityID : citiesWeather.keySet()) {
                     final AccuWeather weather = citiesWeather.get(cityID);
-                    weather.current = AccuWeatherService.getCurrent(cityID);
-                    weather.forecast = AccuWeatherService.getForecast(cityID);
+                    weather.current = AccuWeatherService.getCurrentSample(cityID, getApplicationContext());
+                    weather.forecast = AccuWeatherService.getForecastSample(cityID, getApplicationContext());
                 }
 
                 // Update view in new thread
@@ -265,7 +265,7 @@ public class MainActivity extends Activity {
         button.setPadding(10, 10, 10, 10);
         button.setId(id);
 
-        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.weight = 1.0f;
         params.gravity = Gravity.CENTER;
         params.leftMargin = 10;
