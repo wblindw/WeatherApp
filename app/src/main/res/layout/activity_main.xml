@@ -93,7 +93,7 @@
 
                     <LinearLayout
                         android:id="@+id/cTempValueLayout"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
@@ -119,14 +119,18 @@
                             android:textSize="90sp"
                             android:textStyle="bold"
                             tools:text="°C" />
+
                     </LinearLayout>
 
-                    <LinearLayout
+                    <com.google.android.flexbox.FlexboxLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/cTempMinMaxFeelLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:baselineAligned="true"
-                        android:orientation="horizontal">
+                        app:flexDirection="row"
+                        app:justifyContent="space_between"
+                        app:dividerDrawable="@drawable/empty_v_divider">
 
                         <LinearLayout
                             android:id="@+id/tempMinMaxLayout"
@@ -150,7 +154,6 @@
                                 android:textSize="40sp"
                                 tools:text="x" />
 
-
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
@@ -168,30 +171,20 @@
                                 android:textSize="40sp"
                                 android:textStyle="bold"
                                 tools:text="x" />
+
                         </LinearLayout>
 
-
-                        <LinearLayout
-                            android:id="@+id/tempFeelLayout"
+                        <TextView
+                            android:id="@+id/tempFeelValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:orientation="horizontal">
+                            android:layout_gravity="fill"
+                            android:includeFontPadding="false"
+                            android:text="xxx"
+                            android:textColor="@color/colorFontSecondary"
+                            android:textSize="40sp" />
 
-
-                            <TextView
-                                android:id="@+id/tempFeelValue"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="fill"
-                                android:includeFontPadding="false"
-                                android:text="xxx"
-                                android:textAlignment="viewEnd"
-                                android:textColor="@color/colorFontSecondary"
-                                android:textSize="40sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
+                    </com.google.android.flexbox.FlexboxLayout>
 
                 </LinearLayout>
 
@@ -321,8 +314,7 @@
 
         </com.google.android.flexbox.FlexboxLayout>
 
-        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/bottomLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
