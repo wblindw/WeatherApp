@@ -2,6 +2,8 @@ package com.blind.wakemeup.utils;
 
 import android.content.Context;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,20 +11,41 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
- * Created by delor on 30/01/2018.
+ * Utility class to load context data.
  */
+public abstract class ContextLoader {
 
-public class ContextLoader {
-
-    public static Properties getProperties(int id,Context context) throws IOException {
-        Properties properties = new Properties();
-        InputStream io = context.getResources().openRawResource(id);
-        properties.load(io);
+    /**
+     * Read and return properties from {@link Context} and the ressource id.
+     * @param ctx the app. {@link Context}.
+     * @param resId the resource id of the file.
+     * @return the content of the file. Can not be <code>null</code>. Can be empty if empty file or if error.
+     */
+    public static Properties getProperties(Context ctx, int resId) {
+        final Properties properties = new Properties();
+        InputStream io = ctx.getResources().openRawResource(resId);
+        try {
+            properties.load(io);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return properties;
     }
 
-    public static Integer getResource(String name, String resSubDir, Context context) {
-        Integer nameResourceID = context.getResources().getIdentifier(name, resSubDir, context.getApplicationInfo().packageName);
+    /**
+     * Get resource id from app. {@link Context}, directory, and name
+     * @param ctx the app. {@link Context}.
+     * @param resSubDir the directory name the resource is stored. Can not be <code>null</code>, empty or whitespace only.
+     * @param name the name of the resource. Can not be <code>null</code>, empty or whitespace only.
+     * @return the resource id. Can be <code>null</code>.
+     */
+    public static Integer getResource(Context ctx, String resSubDir, String name) {
+
+        if(ctx == null || StringUtils.isAllBlank(resSubDir) || StringUtils.isAllBlank(name)) {
+            return null;
+        }
+
+        final Integer nameResourceID = ctx.getResources().getIdentifier(name, resSubDir, ctx.getApplicationInfo().packageName);
         if (nameResourceID == 0) {
             return null;
         } else {
@@ -30,16 +53,22 @@ public class ContextLoader {
         }
     }
 
+    /**
+     * Read file content from {@link Context} and the app. ressource id.
+     * @param ctx the app. {@link Context}.
+     * @param resId the resource id of the file.
+     * @return the content of the file. Can be <code>null</code> or empty.
+     */
     public static String readRawTextFile(Context ctx, int resId)
     {
-        InputStream inputStream = ctx.getResources().openRawResource(resId);
+        final InputStream inputStream = ctx.getResources().openRawResource(resId);
+        final BufferedReader buffReader = new BufferedReader(new InputStreamReader(inputStream));
 
-        BufferedReader buffreader = new BufferedReader(new InputStreamReader(inputStream));
+        final StringBuilder text = new StringBuilder();
+
         String line;
-        StringBuilder text = new StringBuilder();
-
         try {
-            while (( line = buffreader.readLine()) != null) {
+            while (( line = buffReader.readLine()) != null) {
                 text.append(line);
                 text.append('\n');
             }

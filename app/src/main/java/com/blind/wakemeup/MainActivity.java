@@ -41,17 +41,26 @@ public class MainActivity extends Activity {
     private int PRIMARY_COLOR;
     private int SECONDARY_COLOR;
 
+    // Current unit used to display temperatures
     private UnitTempEnum currentTempUnitDisplay = UnitTempEnum.CELCIUS;
 
+    // Ref. to the selected city
     private Integer currentCityId;
+
+    // City IDs and related weather
     private Map<Integer, AccuWeather> citiesWeather = new LinkedHashMap<>();
 
     private Properties weatherIcoProperties;
     private Properties weatherUnitsProperties;
 
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+    // Weather update scheduler
+    private final ScheduledExecutorService weatherScheduler = Executors.newScheduledThreadPool(2);
 
-    private final Handler handler= new Handler();
+    private static final TimeUnit   WEATHER_UPDATE_FREQUENCY_UNIT = TimeUnit.HOURS;
+    private static final int        WEATHER_UPDATE_FREQUENCY      = 12;
+
+    // Handler used to update the view when weather data is updated.
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,29 +71,24 @@ public class MainActivity extends Activity {
         PRIMARY_COLOR = ContextCompat.getColor(getApplicationContext(), R.color.colorFontPrimary);
         SECONDARY_COLOR = ContextCompat.getColor(getApplicationContext(), R.color.colorFontSecondary);
 
-        try {
-            weatherIcoProperties = ContextLoader.getProperties(R.raw.weather_codes_ico, getApplicationContext());
-            weatherUnitsProperties = ContextLoader.getProperties(R.raw.units, getApplicationContext());
+        weatherIcoProperties = ContextLoader.getProperties(getApplicationContext(), R.raw.weather_codes_ico);
+        weatherUnitsProperties = ContextLoader.getProperties(getApplicationContext(), R.raw.units);
 
-            final Properties citiesProperties = ContextLoader.getProperties(R.raw.cities, getApplicationContext());
-            for(Object id : citiesProperties.keySet()) {
+        final Properties citiesProperties = ContextLoader.getProperties(getApplicationContext(), R.raw.cities);
+        for(Object id : citiesProperties.keySet()) {
 
-                AccuWeather weather = new AccuWeather();
-                weather.id = Integer.valueOf((String) id);
-                weather.name = citiesProperties.getProperty((String) id);
-                citiesWeather.put(weather.id, weather);
+            final AccuWeather weather = new AccuWeather();
+            weather.id = Integer.valueOf((String) id);
+            weather.name = citiesProperties.getProperty((String) id);
+            citiesWeather.put(weather.id, weather);
 
-                addCity(weather.id);
+            addCity(weather.id);
 
-                // get first element as default city
-                if(currentCityId == null) {
-                    setCurrentCity(weather.id);
-                }
-
+            // get first element as default city
+            if(currentCityId == null) {
+                setCurrentCity(weather.id);
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         findViewById(R.id.tempsLayout).setOnClickListener(new View.OnClickListener() {
@@ -95,38 +99,48 @@ public class MainActivity extends Activity {
             }
         });
 
-        AccuWeatherService.loadKeys(getApplicationContext());
+
+        AccuWeatherService.loadKeys(getApplicationContext(), R.raw.keys);
 
         startUpdateService();
 
     }
 
+    /**
+     * Start view updates
+     */
     protected void startUpdateService() {
-        scheduler.scheduleAtFixedRate(new Runnable() {
+
+        // Get current and forecast weather for all cities
+        weatherScheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
 
+                // Get weathers
                 for(Integer cityID : citiesWeather.keySet()) {
-
                     final AccuWeather weather = citiesWeather.get(cityID);
                     weather.current = AccuWeatherService.getCurrent(cityID);
                     weather.forecast = AccuWeatherService.getForecast(cityID);
-
                 }
 
+                // Update view in new thread
                 handler.post(new Runnable(){
                     public void run(){
+
                         final AccuWeather weather = citiesWeather.get(currentCityId);
+
                         updateView(weather);
+
                         for(int i = 0; i<weather.forecast.dailyForecasts.size(); i++) {
                             updateForecast(weather.forecast.dailyForecasts.get(i), i);
                         }
                     }
                 });
             }
-        }, 0, 12, TimeUnit.HOURS);
+        }, 0, WEATHER_UPDATE_FREQUENCY, WEATHER_UPDATE_FREQUENCY_UNIT);
 
-        scheduler.scheduleWithFixedDelay(new Runnable() {
+        // Get and update current date and time
+        weatherScheduler.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
                 handler.post(new Runnable(){
@@ -138,6 +152,10 @@ public class MainActivity extends Activity {
         }, 0, 1, TimeUnit.SECONDS);
     }
 
+    /**
+     * Update the view with weather data.
+     * @param weather full weather data. Do nothing if <code>null</code>.
+     */
     protected void updateView(final AccuWeather weather) {
 
         if(weather == null || weather.current == null || weather.forecast == null) {
@@ -164,6 +182,9 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Update current date and time.
+     */
     protected  void updateCt() {
 
         final DateTime now = DateTime.now();
@@ -174,6 +195,12 @@ public class MainActivity extends Activity {
 
     }
 
+    /**
+     * Convert and format temperature depending on decimals to display and current unit.
+     * @param tempC  the temperature value.
+     * @param decimal number of decimal to display.
+     * @return input temperature in the current unit, with the number of decimal from input and the temperature unit.
+     */
     private String getPrintableTemp(Double tempC, int decimal) {
 
         double value = 0;
@@ -191,6 +218,10 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * Update main weather data of the current day.
+     * @param weather the weather data.
+     */
     private void updateMainWeather(AccuWeather weather) {
         ((TextView) findViewById(R.id.weatherDesc)).setText(weather.current.weatherText.toUpperCase());
         ((ImageView) findViewById(R.id.ico_weather)).setImageResource(getWeatherIconFromIconId(weather.current.weatherIcon, ""));
@@ -198,11 +229,18 @@ public class MainActivity extends Activity {
 
     private int getWeatherIconFromIconId(Integer weatherIcon, String prefix) {
         String weatherRes = weatherIcoProperties.getProperty(String.valueOf(weatherIcon));
-        return ContextLoader.getResource(prefix + weatherRes, "drawable", getApplicationContext());
+        return ContextLoader.getResource(getApplicationContext(), "drawable", prefix + weatherRes);
     }
 
+    /**
+     * Get the current weather from all weather data.
+     * @param forecast the overall weather data.
+     * @return the current weather, <code>null</code> if no current weather data.
+     */
     private DailyForecast getToday(AccuWeatherForecast forecast) {
-        return forecast.dailyForecasts.get(0);
+
+        return forecast.dailyForecasts.size() > 1 ? forecast.dailyForecasts.get(0) : null;
+
         /*
         DateTime now = DateTime.now();
         for(DailyForecast dForecast : forecast.dailyForecasts) {
@@ -215,6 +253,10 @@ public class MainActivity extends Activity {
     }
 
 
+    /**
+     * Build and add component to select a city.
+     * @param id a reference given to the city selection component.
+     */
     private void addCity(final int id) {
 
         final Button button = new Button(this);
@@ -229,7 +271,7 @@ public class MainActivity extends Activity {
         params.rightMargin = 10;
         button.setLayoutParams(params);
 
-        appyButtonSelectionStyle(button, false);
+        applyButtonSelectionStyle(button, false);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,13 +283,17 @@ public class MainActivity extends Activity {
 
     }
 
+    /**
+     * Set selected city from id.
+     * @param id the id of the city to select.
+     */
     private void setCurrentCity(int id) {
 
         if(currentCityId == null || currentCityId != id) {
             if(currentCityId != null) {
-                appyButtonSelectionStyle((Button) findViewById(currentCityId), false);
+                applyButtonSelectionStyle((Button) findViewById(currentCityId), false);
             }
-            appyButtonSelectionStyle((Button) findViewById(id), true);
+            applyButtonSelectionStyle((Button) findViewById(id), true);
         }
 
         currentCityId = id;
@@ -255,13 +301,21 @@ public class MainActivity extends Activity {
 
     }
 
-    private void appyButtonSelectionStyle(Button button, boolean selected) {
+    /**
+     * Update button style depending on selection state.
+     * @param button the button to update.
+     * @param selected the selection state, <code>true</code> selected, <code>false</code> otherwise.
+     */
+    private void applyButtonSelectionStyle(Button button, boolean selected) {
         button.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
         button.setTextColor(ContextCompat.getColor(getApplicationContext(), selected ? R.color.colorFontPrimary : R.color.colorFontSecondary));
         button.setBackgroundResource(selected ? R.drawable.button_bg_selected : R.drawable.button_bg_unselected);
     }
 
-
+    /**
+     * Update current weather rain value.
+     * @param dailyForecast the current weather data.
+     */
     private void updateRainValue(final DailyForecast dailyForecast){
 
         int prob = dailyForecast.day.rainProbability;
@@ -273,6 +327,10 @@ public class MainActivity extends Activity {
 
     }
 
+    /**
+     * Update current weather snow value.
+     * @param dailyForecast the current weather data.
+     */
     private void updateSnowValue(final DailyForecast dailyForecast){
 
         int prob = dailyForecast.day.snowProbability;
@@ -290,8 +348,11 @@ public class MainActivity extends Activity {
     private final static String FORECAST_TEMP_TAG = "forecast_temp_";
     private final static String FORECAST_RAIN_TAG = "forecast_rain_";
 
+    /**
+     * Build and add a view to display a weather forecast.
+     * @param idx
+     */
     public void addForecast(int idx) {
-
 
         final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
@@ -323,7 +384,16 @@ public class MainActivity extends Activity {
 
     }
 
+    /**
+     * Update all data of a weather forecast day
+     * @param forecast the weather forecast data. Do nothing if <code>null</code>.
+     * @param idx the index of the weather forecast to update. If the view for the index does not exist, it will be created and added.
+     */
     private void updateForecast(DailyForecast forecast, int idx) {
+
+        if(forecast == null) {
+            return;
+        }
 
         final ViewGroup forecastLayout =  ((ViewGroup) findViewById(R.id.forecastLayout));
 
@@ -339,8 +409,14 @@ public class MainActivity extends Activity {
         ((TextView) findViewWithTagRecursively(forecastLayout, FORECAST_SNOW_TAG + idx)).setText(String.valueOf(forecast.day.snowProbability) + "%");
     }
 
-
-    private ViewGroup buildForecastValueView(Context context, int icoId, String valueTag) {
+    /**
+     * Build a view to display one data of a weather forecast. Contains an icon and a value.
+     * @param context current app. context.
+     * @param icoId the id of the icon to display.
+     * @param valueTag the tag of the data displayed.
+     * @return the view.
+     */
+    private ViewGroup buildForecastValueView(final Context context, final int icoId, final String valueTag) {
 
         final ImageView ico = new ImageView(context);
         ico.setImageResource(icoId);

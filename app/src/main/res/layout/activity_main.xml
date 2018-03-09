@@ -8,14 +8,12 @@
     android:padding="10sp"
     tools:context="com.blind.wakemeup.MainActivity">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:flexWrap="wrap"
+        app:justifyContent="space_between">
 
         <LinearLayout
             android:id="@+id/citiesLayout"
@@ -24,23 +22,13 @@
             android:orientation="horizontal">
         </LinearLayout>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="10dp" />
-
-
         <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:alignContent="stretch"
             app:alignItems="stretch"
-            app:flexWrap="wrap"
             app:justifyContent="space_around">
-
-            <Space
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/cWeatherSumLayout"
@@ -71,10 +59,6 @@
                     android:textSize="24sp" />
 
             </LinearLayout>
-
-            <Space
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/tempsLayout"
@@ -198,10 +182,6 @@
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
-
             <com.google.android.flexbox.FlexboxLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -308,10 +288,6 @@
 
             </com.google.android.flexbox.FlexboxLayout>
 
-            <Space
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
-
         </com.google.android.flexbox.FlexboxLayout>
 
         <com.google.android.flexbox.FlexboxLayout
@@ -410,8 +386,7 @@
 
         </com.google.android.flexbox.FlexboxLayout>
 
-
-    </LinearLayout>
+    </com.google.android.flexbox.FlexboxLayout>
 
 
 </android.support.constraint.ConstraintLayout>

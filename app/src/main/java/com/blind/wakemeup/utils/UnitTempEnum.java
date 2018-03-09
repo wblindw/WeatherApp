@@ -1,10 +1,10 @@
 package com.blind.wakemeup.utils;
 
 /**
- * Created by delor on 29/01/2018.
+ * Available temperature units.
  */
-
 public enum UnitTempEnum {
+
     CELCIUS ("°C"),
     FAHRENHEIT ("°F");
 
@@ -13,6 +13,11 @@ public enum UnitTempEnum {
     displauStr = s;
     }
 
+    /**
+     * Get next available unit related to the available units and input one.
+     * @param current the unit reference.
+     * @return the next temperature.
+     */
     public static UnitTempEnum next(UnitTempEnum current){
         int nextOrdinal = current.ordinal() + 1;
         if(nextOrdinal >= UnitTempEnum.values().length) {
@@ -20,7 +25,6 @@ public enum UnitTempEnum {
         } else {
             return UnitTempEnum.values()[nextOrdinal];
         }
-
     }
 
     @Override

@@ -1,8 +1,5 @@
 package com.blind.wakemeup.utils;
 
-/**
- * Created by delor on 29/01/2018.
- */
 
 public abstract class Units {
 

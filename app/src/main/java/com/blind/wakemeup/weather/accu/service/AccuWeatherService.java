@@ -23,7 +23,9 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Allow to get weather data from AccuWeather API.
+ */
 public class AccuWeatherService {
 
     private static final String LOG_TAG= AccuWeatherService.class.getSimpleName();
@@ -38,18 +40,25 @@ public class AccuWeatherService {
     private static final String CURRENT_URL = BASE_URL + "currentconditions/v1/";
     private static final String FORECAST_URL = BASE_URL + "forecasts/v1/daily/5day/";
 
-    public static void loadKeys(final Context context) {
-
+    /**
+     * Load all available API keys for AccuWeather service.
+     * @param context app. context to access API keys file.
+     * @param fileId keys file resource id.
+     */
+    public static void loadKeys(final Context context, int fileId) {
         try {
-            String str = ContextLoader.readRawTextFile(context, R.raw.keys);
+            String str = ContextLoader.readRawTextFile(context, fileId);
             keys = Arrays.asList(str.split("\n"));
         } catch (Exception e) {
             Log.e(LOG_TAG, "Unable to load API Keys.", e);
         }
-
-
     }
 
+    /**
+     * Get current weather for a location.
+     * @param locationCode the location code (see AccuWeather web site)
+     * @return the current weather for the input code. Can be <code>null</code>.
+     */
     public static AccuWeatherCurrent getCurrent(int locationCode) {
         AccuWeatherCurrent weather = null;
         try {
@@ -64,41 +73,42 @@ public class AccuWeatherService {
     }
 
 
+    /**
+     * Get the weather forecast fot a location.
+     * @param locationCode the location code (see AccuWeather web site)
+     * @return the weather forecast for the input code. Can be <code>null</code>.
+     */
     public static AccuWeatherForecast getForecast(int locationCode) {
-        String result = null;
+        AccuWeatherForecast weather = null;
         try {
-
-            result = getRawData(FORECAST_URL + locationCode);
-            if(result == null) {
-                return null;
+            final String result = getRawData(FORECAST_URL + locationCode);
+            if(result != null) {
+                weather = new ObjectMapper().readValue(result, AccuWeatherForecast.class);
             }
-           // final String str = result.subSequence(result.indexOf("{"), result.lastIndexOf("}")).toString();
-            return new ObjectMapper().readValue(result, AccuWeatherForecast.class);
         } catch (IOException e) {
             e.printStackTrace();
-            try {
-                Log.e(LOG_TAG, new JSONObject(result).toString(2));
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
         }
-        return null;
+        return weather;
     }
 
+    /**
+     * Call weather service.
+     * @param urlStr the service URL.
+     * @return the raw data from the service called. Can be <code>null</code> or empty.
+     */
     public static String getRawData(String urlStr) {
         try {
-            URL url = new URL(String.format(urlStr + "?" + API_KEY_PARAM + keys.get(currentKeyIndex) + EXTRA_URL));
-            HttpURLConnection connection =
-                    (HttpURLConnection)url.openConnection();
 
-            int code = connection.getResponseCode();
+            final URL url = new URL(String.format(urlStr + "?" + API_KEY_PARAM + keys.get(currentKeyIndex) + EXTRA_URL));
+            final HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+
+            final int code = connection.getResponseCode();
 
             if(code == 200) {
 
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                final StringBuffer json = new StringBuffer(1024);
 
-                StringBuffer json = new StringBuffer(1024);
                 String tmp = "";
                 while ((tmp = reader.readLine()) != null) {
                     json.append(tmp).append("\n");
