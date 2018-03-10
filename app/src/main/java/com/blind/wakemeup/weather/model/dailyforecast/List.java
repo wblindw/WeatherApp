@@ -1,5 +1,5 @@
 
-package com.blind.wakemeup.weather.model.forecast;
+package com.blind.wakemeup.weather.model.dailyforecast;
 
 import com.blind.wakemeup.weather.model.common.Clouds;
 import com.blind.wakemeup.weather.model.common.Rain;

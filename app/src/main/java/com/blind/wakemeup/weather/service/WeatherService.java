@@ -2,7 +2,7 @@ package com.blind.wakemeup.weather.service;
 
 
 import com.blind.wakemeup.weather.model.current.CurrentWeather;
-import com.blind.wakemeup.weather.model.forecast.WeatherForcast;
+import com.blind.wakemeup.weather.model.dailyforecast.DailyWeatherForcast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -91,7 +91,7 @@ public class WeatherService {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
-                    WeatherForcast weather = new ObjectMapper().readValue(new String(responseBody), WeatherForcast.class);
+                    DailyWeatherForcast weather = new ObjectMapper().readValue(new String(responseBody), DailyWeatherForcast.class);
                     cb.onData(weather);
                 } catch (IOException e) {
                     e.printStackTrace();

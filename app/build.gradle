@@ -32,4 +32,5 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
     compile 'com.google.android:flexbox:0.3.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }

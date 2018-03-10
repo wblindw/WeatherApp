@@ -7,11 +7,10 @@ import android.util.Log;
 import com.blind.wakemeup.R;
 import com.blind.wakemeup.utils.ContextLoader;
 import com.blind.wakemeup.weather.accu.model.day.AccuWeatherCurrent;
-import com.blind.wakemeup.weather.accu.model.forecast.AccuWeatherForecast;
+import com.blind.wakemeup.weather.accu.model.forecast.AccuWeatherDailyForecast;
+import com.blind.wakemeup.weather.accu.model.hourlyforecast.AccuWeatherHourlyForecast;
+import com.blind.wakemeup.weather.accu.model.hourlyforecast.HourlyForecast;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -38,7 +37,8 @@ public class AccuWeatherService {
     private static final String BASE_URL = "http://dataservice.accuweather.com/";
     private static final String EXTRA_URL = "&details=true&metric=true";
     private static final String CURRENT_URL = BASE_URL + "currentconditions/v1/";
-    private static final String FORECAST_URL = BASE_URL + "forecasts/v1/daily/5day/";
+    private static final String DAILY_FORECAST_URL = BASE_URL + "forecasts/v1/daily/5day/";
+    private static final String HOURLY_FORECAST_URL = BASE_URL + "forecasts/v1/hourly/12hour/";
 
     /**
      * Load all available API keys for AccuWeather service.
@@ -74,16 +74,36 @@ public class AccuWeatherService {
 
 
     /**
-     * Get the weather forecast fot a location.
+     * Get the daily weather forecast for a location.
      * @param locationCode the location code (see AccuWeather web site)
      * @return the weather forecast for the input code. Can be <code>null</code>.
      */
-    public static AccuWeatherForecast getForecast(int locationCode) {
-        AccuWeatherForecast weather = null;
+    public static AccuWeatherDailyForecast getDailyForecast(int locationCode) {
+        AccuWeatherDailyForecast weather = null;
         try {
-            final String result = getRawData(FORECAST_URL + locationCode);
+            final String result = getRawData(DAILY_FORECAST_URL + locationCode);
             if(result != null) {
-                weather = new ObjectMapper().readValue(result, AccuWeatherForecast.class);
+                weather = new ObjectMapper().readValue(result, AccuWeatherDailyForecast.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return weather;
+    }
+
+    /**
+     * Get the hourly weather forecast fot a location.
+     * @param locationCode the location code (see AccuWeather web site)
+     * @return the weather forecast for the input code. Can be <code>null</code>.
+     */
+    public static AccuWeatherHourlyForecast getHourlyForecast(int locationCode) {
+        AccuWeatherHourlyForecast weather = null;
+        try {
+            final String result = getRawData(HOURLY_FORECAST_URL + locationCode);
+            if(result != null) {
+                final ObjectMapper mapper = new ObjectMapper();
+                weather = new AccuWeatherHourlyForecast();
+                weather.forecast = mapper.readValue(result, mapper.getTypeFactory().constructCollectionType(List.class, HourlyForecast.class));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,27 +184,45 @@ public class AccuWeatherService {
     }
 
     public static AccuWeatherCurrent getCurrentSample(int locationCode, Context context) {
-
+        AccuWeatherCurrent forecast = null;
         try {
             String str = ContextLoader.readRawTextFile(context, R.raw.cweather);
             String res = str.substring(1, str.length() - 1);
 
-            return new ObjectMapper().readValue(res, AccuWeatherCurrent.class);
+            forecast = new ObjectMapper().readValue(res, AccuWeatherCurrent.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return forecast;
     }
 
-    public static AccuWeatherForecast getForecastSample(int locationCode, Context context) {
-
+    public static AccuWeatherDailyForecast getDailyForecastSample(int locationCode, Context context) {
+        AccuWeatherDailyForecast forecast = null;
         try {
             String str = ContextLoader.readRawTextFile(context, R.raw.fweather);
-            return new ObjectMapper().readValue(str, AccuWeatherForecast.class);
+            forecast = new ObjectMapper().readValue(str, AccuWeatherDailyForecast.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return forecast;
     }
+
+    public static AccuWeatherHourlyForecast getHourlyForecastSample(int locationCode, Context context) {
+        AccuWeatherHourlyForecast forecast = null;
+        try {
+            String str = ContextLoader.readRawTextFile(context, R.raw.hweather);
+            final ObjectMapper mapper = new ObjectMapper();
+
+            forecast = new AccuWeatherHourlyForecast();
+            forecast.forecast = mapper.readValue(str, mapper.getTypeFactory().constructCollectionType(List.class, HourlyForecast.class));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            forecast = null;
+        }
+        return forecast;
+    }
+
+
 
 }

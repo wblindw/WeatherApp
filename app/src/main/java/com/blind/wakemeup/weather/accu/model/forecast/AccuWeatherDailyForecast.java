@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "Headline",
     "DailyForecasts"
 })
-public class AccuWeatherForecast {
+public class AccuWeatherDailyForecast {
 
     @JsonProperty("Headline")
     public Headline headline;

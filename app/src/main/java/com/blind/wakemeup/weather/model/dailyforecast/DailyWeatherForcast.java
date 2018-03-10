@@ -1,5 +1,5 @@
 
-package com.blind.wakemeup.weather.model.forecast;
+package com.blind.wakemeup.weather.model.dailyforecast;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
     "list",
     "city"
 })
-public class WeatherForcast implements Serializable
+public class DailyWeatherForcast implements Serializable
 {
     @JsonProperty("city")
     public City city;
@@ -29,7 +29,7 @@ public class WeatherForcast implements Serializable
     @JsonProperty("cnt")
     public Integer cnt;
     @JsonProperty("list")
-    public java.util.List<com.blind.wakemeup.weather.model.forecast.List> list = new ArrayList<com.blind.wakemeup.weather.model.forecast.List>();
+    public java.util.List<com.blind.wakemeup.weather.model.dailyforecast.List> list = new ArrayList<com.blind.wakemeup.weather.model.dailyforecast.List>();
     private final static long serialVersionUID = 5432354435853385627L;
 
     @Override

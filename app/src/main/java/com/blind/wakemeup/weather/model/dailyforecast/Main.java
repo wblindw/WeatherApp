@@ -1,5 +1,5 @@
 
-package com.blind.wakemeup.weather.model.forecast;
+package com.blind.wakemeup.weather.model.dailyforecast;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
