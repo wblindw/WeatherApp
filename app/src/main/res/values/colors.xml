@@ -5,8 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorBckg">#DADFCB</color>
-    <color name="colorFontPrimary">#52554D</color>
-    <color name="colorFontSecondary">#A1A596</color>
-
+    <color name="colorFontPrimary">#000000</color>
+    <color name="colorFontSecondary">#000000</color>
 </resources>
 

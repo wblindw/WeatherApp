@@ -2,7 +2,6 @@ package com.blind.wakemeup;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,12 +10,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
+import android.widget.ViewFlipper;
 
 
 import com.blind.wakemeup.utils.ContextLoader;
@@ -29,19 +27,18 @@ import com.blind.wakemeup.weather.accu.model.hourlyforecast.AccuWeatherHourlyFor
 import com.blind.wakemeup.weather.accu.model.hourlyforecast.HourlyForecast;
 import com.blind.wakemeup.weather.accu.service.AccuWeatherService;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.google.android.flexbox.FlexboxLayout;
 
 import org.joda.time.DateTime;
-import org.w3c.dom.Text;
 
-
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -80,6 +77,15 @@ public class MainActivity extends Activity {
 
     // Handler used to update the view when weather data is updated.
     private final Handler handler = new Handler();
+
+    private static String CHAR_SEPARATOR;
+    static {
+        final NumberFormat nf = NumberFormat.getInstance();
+        CHAR_SEPARATOR = (nf instanceof DecimalFormat) ? ((DecimalFormat) nf).getDecimalFormatSymbols().getDecimalSeparator() + "" : ".";
+        if(".".equals(CHAR_SEPARATOR)) {
+            CHAR_SEPARATOR = "\\" + CHAR_SEPARATOR;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +131,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.currentWeatherViewSwitcher).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((ViewSwitcher) findViewById(R.id.currentWeatherViewSwitcher)).showNext();
+                ((ViewFlipper) findViewById(R.id.currentWeatherViewSwitcher)).showNext();
             }
         });
 
@@ -147,15 +153,17 @@ public class MainActivity extends Activity {
 
                 // Get weathers
                 for(Integer cityID : citiesWeather.keySet()) {
-                    final AccuWeather weather = citiesWeather.get(cityID);
-                    /**
-                    weather.current = AccuWeatherService.getCurrentSample(cityID, getApplicationContext());
-                    weather.forecast = AccuWeatherService.getDailyForecastSample(cityID, getApplicationContext());
-                    weather.hourly = AccuWeatherService.getHourlyForecastSample(cityID, getApplicationContext());
-                    */
-                    weather.current = AccuWeatherService.getCurrent(cityID);
-                    weather.forecast = AccuWeatherService.getDailyForecast(cityID);
-                    weather.hourly = AccuWeatherService.getHourlyForecast(cityID);
+
+                    AccuWeather weather = citiesWeather.get(cityID);
+                    if(true) {
+                        weather.current = AccuWeatherService.getCurrentSample(cityID, getApplicationContext());
+                        weather.forecast = AccuWeatherService.getDailyForecastSample(cityID, getApplicationContext());
+                        weather.hourly = AccuWeatherService.getHourlyForecastSample(cityID, getApplicationContext());
+                    } else {
+                        weather.current = AccuWeatherService.getCurrent(cityID);
+                        weather.forecast = AccuWeatherService.getDailyForecast(cityID);
+                        weather.hourly = AccuWeatherService.getHourlyForecast(cityID);
+                    }
 
                 }
 
@@ -182,12 +190,13 @@ public class MainActivity extends Activity {
             public void run() {
                 handler.post(new Runnable(){
                     public void run(){
-                        updateCt();
+                        /* updateCt(); */
                     }
                 });
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
+
 
     /**
      * Update the view with weather data.
@@ -201,13 +210,17 @@ public class MainActivity extends Activity {
 
         final DailyForecast dailyForecast = getToday(weather.forecast);
 
-        ((TextView) findViewById(R.id.tempValue)).setText(getPrintableTemp(weather.current.temperature.metric.value, 1));
+        final String[] currentTempValue = getPrintableTemp(weather.current.temperature.metric.value,1).split(CHAR_SEPARATOR);
+        if(currentTempValue != null && currentTempValue.length >= 2) {
+            ((TextView) findViewById(R.id.tempValue)).setText(currentTempValue[0]);
+            ((TextView) findViewById(R.id.tempDecimalValue)).setText("." + currentTempValue[1]);
+        }
         ((TextView) findViewById(R.id.tempUnit)).setText(currentTempUnitDisplay.toString());
         ((TextView) findViewById(R.id.tempMaxValue)).setText(getPrintableTemp(dailyForecast.temperature.maximum.value, 0));
         ((TextView) findViewById(R.id.tempMinValue)).setText(getPrintableTemp(dailyForecast.temperature.minimum.value, 0));
         ((TextView) findViewById(R.id.tempFeelValue)).setText(getPrintableTemp(weather.current.realFeelTemperature.metric.value, 0));
 
-        // updateRainValue(dailyForecast);
+        updateRainValue(dailyForecast);
         updateSnowValue(dailyForecast);
 
         updateMainWeather(weather);
@@ -250,7 +263,7 @@ public class MainActivity extends Activity {
         if(currentTempUnitDisplay == UnitTempEnum.CELCIUS) {
          value = tempC;
         }
-         else  if(currentTempUnitDisplay == UnitTempEnum.FAHRENHEIT) {
+         else if(currentTempUnitDisplay == UnitTempEnum.FAHRENHEIT) {
             value = Units.tempCtoF(tempC);
         }
 
@@ -366,7 +379,7 @@ public class MainActivity extends Activity {
         textView.setText(String.valueOf(prob));
         textView.setTextColor(prob > 0.f ? PRIMARY_COLOR : SECONDARY_COLOR);
 
-        ((ImageView) findViewById(R.id.rainValueImage)).setImageResource(prob > 0.f ? R.drawable.rain_value : R.drawable.rain_value_off);
+        ((ImageView) findViewById(R.id.rainValueImage)).setImageResource(prob > 0.f ? R.drawable.rain_value : R.drawable.rain_value);
 
     }
 
@@ -381,7 +394,7 @@ public class MainActivity extends Activity {
         textView.setText(String.valueOf(prob));
         textView.setTextColor(prob > 0.f ? PRIMARY_COLOR : SECONDARY_COLOR);
 
-        ((ImageView) findViewById(R.id.snowValueImage)).setImageResource(prob > 0.f ? R.drawable.snow_value : R.drawable.snow_value_off);
+        ((ImageView) findViewById(R.id.snowValueImage)).setImageResource(prob > 0.f ? R.drawable.snow_value : R.drawable.snow_value);
 
     }
 
@@ -423,7 +436,12 @@ public class MainActivity extends Activity {
         forecastView.addView(snowView);
         forecastView.setPadding(20, 0, 0, 0);
 
-        ((ViewGroup) findViewById(R.id.forecastLayout)).addView(forecastView);
+        ViewGroup viewGpoup = ((ViewGroup) findViewById(R.id.forecastLayout));
+        FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) viewGpoup.getLayoutParams();
+        lp.setFlexGrow(1);
+        forecastView.setLayoutParams(lp);
+
+        viewGpoup.addView(forecastView);
 
     }
 
@@ -566,7 +584,7 @@ public class MainActivity extends Activity {
         final LineDataSet minDataSet = new LineDataSet(entries, "");
         minDataSet.setColor(color);
         minDataSet.setCircleColor(color);
-        minDataSet.setValueTextColor(color == 0 ? PRIMARY_COLOR : color);
+        minDataSet.setValueTextColor(color == 0 ? PRIMARY_COLOR : PRIMARY_COLOR);
         minDataSet.setDrawCircleHole(false);
         minDataSet.setDrawCircles(true);
         minDataSet.setValueFormatter(valueFormatter);
