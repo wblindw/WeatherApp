@@ -1,0 +1,147 @@
+<!-- HOURLY FORECAST -->
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:flexDirection="column">
+
+
+    <!-- HOURS
+    <com.google.android.flexbox.FlexboxLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:justifyContent="center"
+        app:flexDirection="row"
+        app:layout_flexGrow="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:scaleType="center"
+            android:src="@drawable/small_rain_value" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_flexGrow="1"
+            >
+
+            <TableRow
+                android:id="@+id/hourlyForecastTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </TableLayout>
+
+    </com.google.android.flexbox.FlexboxLayout>
+-->
+    <!-- SNOW
+    <com.google.android.flexbox.FlexboxLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:justifyContent="center"
+        app:flexDirection="row"
+        app:layout_flexGrow="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:scaleType="center"
+            android:src="@drawable/small_snow_value"/>
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_flexGrow="1"
+            >
+
+            <TableRow
+                android:id="@+id/snowProbabilities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TableRow
+                android:id="@+id/snowValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </TableLayout>
+
+    </com.google.android.flexbox.FlexboxLayout>
+ -->
+    <!-- RAIN
+    <com.google.android.flexbox.FlexboxLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:justifyContent="center"
+        app:flexDirection="row"
+        app:layout_flexGrow="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:scaleType="center"
+            android:src="@drawable/small_rain_value" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_flexGrow="1"
+            >
+
+            <TableRow
+                android:id="@+id/rainProbabilities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <TableRow
+                android:id="@+id/rainValues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </TableLayout>
+
+    </com.google.android.flexbox.FlexboxLayout>
+ -->
+    <!--TEMPS-->
+    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:flexDirection="column"
+        app:justifyContent="space_between">
+
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/valuesChart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_flexGrow="1" />
+
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/tempChart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_flexGrow="1" />
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+</com.google.android.flexbox.FlexboxLayout>
