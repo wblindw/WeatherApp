@@ -3,6 +3,7 @@ package com.blind.wakemeup;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.blind.wakemeup.utils.ContextLoader;
@@ -244,17 +244,17 @@ public class MainActivity extends Activity {
 
                                                      final com.blind.wakemeup.weather.accu.model.AccuWeather weather = citiesWeather.get(cityID);
 
-                                                     if(false) {
-                                                         weather.current = com.blind.wakemeup.weather.accu.service.AccuWeatherService.getCurrentSample(cityID,
-                                                                                                                                                       getApplicationContext());
-                                                         weather.forecast = com.blind.wakemeup.weather.accu.service.AccuWeatherService.getDailyForecastSample(cityID,
-                                                                                                                                                              getApplicationContext());
-                                                         weather.hourly = com.blind.wakemeup.weather.accu.service.AccuWeatherService.getHourlyForecastSample(cityID,
-                                                                                                                                                             getApplicationContext());
+                                                     if(!true) {
+                                                         weather.current = AccuWeatherService.getCurrentSample(cityID,
+                                                                                                               getApplicationContext());
+                                                         weather.forecast = AccuWeatherService.getDailyForecastSample(cityID,
+                                                                                                                      getApplicationContext());
+                                                         weather.hourly = AccuWeatherService.getHourlyForecastSample(cityID,
+                                                                                                                     getApplicationContext());
                                                      } else {
-                                                         weather.current = com.blind.wakemeup.weather.accu.service.AccuWeatherService.getCurrent(cityID);
-                                                         weather.forecast = com.blind.wakemeup.weather.accu.service.AccuWeatherService.getDailyForecast(cityID);
-                                                         weather.hourly = com.blind.wakemeup.weather.accu.service.AccuWeatherService.getHourlyForecast(cityID);
+                                                         weather.current = AccuWeatherService.getCurrent(cityID);
+                                                         weather.forecast = AccuWeatherService.getDailyForecast(cityID);
+                                                         weather.hourly = AccuWeatherService.getHourlyForecast(cityID);
                                                      }
 
                                                      // Update view in new thread
@@ -629,13 +629,15 @@ public class MainActivity extends Activity {
         chart.setAutoScaleMinMaxEnabled(false);
 
         final XAxis xAxis = chart.getXAxis();
-        xAxis.setEnabled(true);
+        xAxis.setEnabled(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularityEnabled(false);
         xAxis.setGranularity(1f);
         xAxis.setTextColor(PRIMARY_COLOR);
+        xAxis.setTypeface(Typeface.create(xAxis.getTypeface(),
+                                          Typeface.BOLD));
 
         //xAxis.setTextSize(20);
 
@@ -686,89 +688,80 @@ public class MainActivity extends Activity {
         for(int i = 0; i < forecasts.forecast.size(); i++) {
             final HourlyForecast forecast = forecasts.forecast.get(i);
 
+            float temp = forecast.temperature.value.floatValue();
+            float rTemp = forecast.realFeelTemperature.value.floatValue();
+
             realValues.add(new Entry(i,
-                                     forecast.temperature.value.floatValue()));
+                                     temp));
 
             feelValues.add(new Entry(i,
-                                     forecast.realFeelTemperature.value.floatValue()));
+                                     rTemp));
 
         }
-
-        final IValueFormatter tempFormatter = (value, entry, dataSetIndex, viewPortHandler) -> getPrintableTemp((double) value,
-                                                                                                                1);
 
         final ArrayList<LineDataSet> set = new ArrayList<>();
         set.add(buildTempLineDataSet(realValues,
                                      PRIMARY_COLOR,
                                      false,
-                                     tempFormatter));
+                                     (v, e, dsi, vph) -> e.getX() % 2 == 0
+                                                         ? getPrintableTemp((double) v,
+                                                                            1)
+                                                         : ""));
         set.add(buildTempLineDataSet(feelValues,
                                      SECONDARY_COLOR,
                                      false,
-                                     tempFormatter));
+                                     (v, e, dsi, vph) -> e.getX() % 2 != 0
+                                                         ? getPrintableTemp((double) v,
+                                                                            1)
+                                                         : ""));
         return set;
 
     }
 
-    private LineDataSet buildFakeLineDataForecastChart(final AccuWeatherHourlyForecast forecasts,
-                                                       final IValueFormatter formatter,
-                                                       final float shift) {
+    private LineDataSet buildHourForecastChart(final AccuWeatherHourlyForecast forecasts,
+                                               float shift) {
 
         final List<Entry> values = new ArrayList<>();
+
         for(int i = 0; i < forecasts.forecast.size(); i++) {
             values.add(new Entry(i,
                                  shift));
-        }
-        return buildFakeLineDataSet(values,
-                                    formatter);
-
-    }
-
-    private LineDataSet buildIcoData(final AccuWeatherHourlyForecast forecasts, final float shift) {
-        final List<Entry> values = new ArrayList<>();
-        Integer previousIco = null;
-        for(int i = 0; i < forecasts.forecast.size(); i++) {
-
-            int ico = getWeatherIconFromIconId(forecasts.forecast.get(i).weatherIcon,
-                                               "tiny_");
-            if(previousIco == null || ico != previousIco) {
-                final Entry entry = new Entry(i,
-                                              shift);
-                previousIco = ico;
-                entry.setIcon(getResources().getDrawable(ico,
-                                                         null));
-                values.add(entry);
-            }
 
         }
-        return buildIcoLineDataSet(values);
+
+        final LineDataSet dataSet = new LineDataSet(values,
+                                                    "");
+        dataSet.setDrawCircleHole(false);
+        dataSet.setDrawCircles(false);
+        dataSet.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) ->  new org.joda.time.DateTime(forecasts.forecast.get((int) entry.getX()).dateTime).getHourOfDay() + ":00");
+        dataSet.setLineWidth(0f);
+        dataSet.setLineWidth(0f);
+        dataSet.setColor(Color.argb(0,
+                                    0,
+                                    0,
+                                    0));
+        dataSet.setValueTypeface(Typeface.create(dataSet.getValueTypeface(), Typeface.BOLD));
+        return dataSet;
+
     }
 
     private void updateHourlyForecast(final View root, final AccuWeatherHourlyForecast forecasts) {
-        /*
-        for(int i = 0   ; i<forecasts.forecast.size(); i++) {
-            updateHourlyForecastDataComponent(root, R.id.hourlyForecastTime, i, false,new DateTime((forecasts.forecast.get(i).dateTime)).getHourOfDay()  + ":00");
-            updateHourlyForecastDataComponent(root, R.id.snowProbabilities, i, true,forecasts.forecast.get(i).snowProbability + "%");
-            updateHourlyForecastDataComponent(root, R.id.snowValues, i, false,forecasts.forecast.get(i).snow.value + "");
-            updateHourlyForecastDataComponent(root, R.id.rainProbabilities, i, true,forecasts.forecast.get(i).rainProbability + "%");
-            updateHourlyForecastDataComponent(root, R.id.rainValues, i, false,forecasts.forecast.get(i).rain.value + "");
-        }*/
 
         if(forecasts == null) {
             return;
         }
 
         final LineChart tempChart = root.findViewById(R.id.tempChart);
-        tempChart.getXAxis()
-                .setValueFormatter((value, axis) -> {
-                    String ret = "";
-                    if(forecasts.forecast != null && forecasts.forecast.size() >= value) {
-                        ret = new org.joda.time.DateTime(forecasts.forecast.get((int) value).dateTime).getHourOfDay() + ":00";
-                    }
-                    return ret;
-                });
+//        tempChart.getXAxis()
+//                .setValueFormatter((value, axis) -> {
+//                    String ret = "";
+//                    if(forecasts.forecast != null && forecasts.forecast.size() >= value) {
+//                        ret = new org.joda.time.DateTime(forecasts.forecast.get((int) value).dateTime).getHourOfDay() + ":00";
+//                    }
+//                    return ret;
+//                });
 
-       /* float maxTemp = (float) forecasts.forecast.stream()
+        /* float maxTemp = (float) forecasts.forecast.stream()
                 .mapToDouble(value -> value.temperature.value)
                 .max()
                 .getAsDouble();*/
@@ -783,82 +776,36 @@ public class MainActivity extends Activity {
         final List<ILineDataSet> valueSets = new ArrayList<>();
 
         // -- RAIN
-        valueSets.add(buildFakeLineDataForecastChart(forecasts,
-                                                     buildValueFormatter(forecasts.forecast.stream()
-                                                                                 .mapToInt(value -> value.snowProbability)
-                                                                                 .toArray()),
-                                                     1));
+        valueSets.addAll(new ProbabilityChartBuilder(forecasts,
+                                                     forecast -> forecast.rainProbability,
+                                                     1).buildData());
 
         // -- SNOW
-        valueSets.add(buildFakeLineDataForecastChart(forecasts,
-                                                     buildValueFormatter(forecasts.forecast.stream()
-                                                                                 .mapToInt(value -> value.rainProbability)
-                                                                                 .toArray()),
-                                                     3));
+        valueSets.addAll(new ProbabilityChartBuilder(forecasts,
+                                                     forecast -> forecast.snowProbability,
+                                                     3).buildData());
 
-        // -- ICO
-        valueSets.add(
+        // -- CONDITION
+        valueSets.addAll(new ConditionChartBuilder(forecasts,
+                                                   forecast -> getWeatherIconFromIconId(forecast.weatherIcon,
+                                                                                        "tiny_"),
+                                                   5) {
 
-                buildIcoData(forecasts,
-                             6));
-        valuesChart.setData(new
+            @Override
+            protected Entry buildDataEntry(float x, float y, final HourlyForecast forecast) {
+                final Entry entry = new Entry(x,
+                                              y);
+                entry.setIcon(getResources().getDrawable(dataProvider.getData(forecast),
+                                                         null));
+                return entry;
+            }
 
-                                    LineData(valueSets));
+        }.buildData());
+
+        valueSets.add(buildHourForecastChart(forecasts, 7));
+
+        valuesChart.setData(new LineData(valueSets));
         valuesChart.invalidate(); // refresh
-
-    }
-
-    private com.github.mikephil.charting.formatter.IValueFormatter buildValueFormatter(int[] values) {
-        return (value, entry, dataSetIndex, viewPortHandlernew) -> {
-            int index = (int) entry.getX();
-            final int cValue = values[index];
-            final Integer pValue = index > 0
-                                   ? values[index - 1]
-                                   : null;
-
-            final String ret = (pValue == null || cValue != pValue)
-                               ? cValue + "%"
-                               : "";
-
-            return ret;
-
-        };
-    }
-
-    private void updateHourlyForecastDataComponent(View root,
-                                                   int parentId,
-                                                   int childIdx,
-                                                   boolean isPrimaryValue,
-                                                   String newValue) {
-        final TableRow valuesTableRow = root.findViewById(parentId);
-        if(valuesTableRow == null) {
-            return;
-        }
-
-        TextView child = (TextView) valuesTableRow.getChildAt(childIdx);
-        if(child == null) {
-            final TextView valueView = buildHourlyForecastDataComponent(isPrimaryValue
-                                                                        ? PRIMARY_COLOR
-                                                                        : SECONDARY_COLOR);
-            valuesTableRow.addView(valueView);
-            child = valueView;
-        }
-        child.setText(newValue);
-    }
-
-    private TextView buildHourlyForecastDataComponent(int color) {
-
-        final TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(0,
-                                                                             TableRow.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = Gravity.CENTER;
-        layoutParams.weight = 1;
-
-        final TextView valueView = new TextView(getApplicationContext());
-        valueView.setTextColor(color);
-        valueView.setLayoutParams(layoutParams);
-        valueView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
-        return valueView;
 
     }
 
@@ -890,49 +837,9 @@ public class MainActivity extends Activity {
         dataSet.setIconsOffset(new MPPointF(0,
                                             -dataSet.getValueTextSize() * 2));
 
+        dataSet.setMode(LineDataSet.Mode.LINEAR);
+
         dataSet.setFillColor(color);
-        return dataSet;
-    }
-
-    private LineDataSet buildFakeLineDataSet(List<Entry> entries, IValueFormatter formatter) {
-
-        final LineDataSet minDataSet = new LineDataSet(entries,
-                                                       "");
-
-        minDataSet.setDrawCircleHole(false);
-        minDataSet.setDrawCircles(false);
-        minDataSet.setCircleRadius(minDataSet.getCircleRadius() / 2);
-
-        minDataSet.setValueFormatter(formatter);
-
-        minDataSet.setDrawFilled(false);
-
-        minDataSet.setDrawHighlightIndicators(false);
-        minDataSet.setLineWidth(0f);
-        minDataSet.setColor(Color.argb(0,
-                                       0,
-                                       0,
-                                       0));
-
-        minDataSet.setDrawIcons(false);
-
-        return minDataSet;
-    }
-
-    private LineDataSet buildIcoLineDataSet(List<Entry> entries) {
-
-        final LineDataSet dataSet = new LineDataSet(entries,
-                                                    "");
-
-        dataSet.setDrawCircles(false);
-        dataSet.setDrawValues(false);
-        dataSet.setLineWidth(0f);
-        dataSet.setColor(Color.argb(0,
-                                    0,
-                                    0,
-                                    0));
-        dataSet.setDrawIcons(true);
-
         return dataSet;
     }
 
