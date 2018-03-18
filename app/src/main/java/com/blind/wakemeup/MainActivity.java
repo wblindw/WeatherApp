@@ -1,27 +1,24 @@
 package com.blind.wakemeup;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blind.wakemeup.utils.ContextLoader;
 import com.blind.wakemeup.utils.UnitTempEnum;
 import com.blind.wakemeup.utils.Units;
+import com.blind.wakemeup.utils.ViewUtils;
 import com.blind.wakemeup.weather.CitySwitchGestureDetector;
 import com.blind.wakemeup.weather.accu.model.AccuWeather;
 import com.blind.wakemeup.weather.accu.model.forecast.AccuWeatherDailyForecast;
@@ -37,19 +34,15 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.google.android.flexbox.AlignSelf;
-import com.google.android.flexbox.FlexboxLayout;
 
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -57,29 +50,16 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity {
 
-    private final static String   LOG_TAG                       = MainActivity.class.getSimpleName();
+    private final static String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private static final boolean MOK_API = false;
+
     private static final TimeUnit WEATHER_UPDATE_FREQUENCY_UNIT = TimeUnit.HOURS;
     private static final int      WEATHER_UPDATE_FREQUENCY      = 12;
     private static final String   DEGREE_CHAR                   = "°";
-    private final static String   FORECAST_DAY_TAG              = "forecast_day_";
-    private final static String   FORECAST_ICO_TAG              = "forecast_ico_";
-    private final static String   FORECAST_SNOW_TAG             = "forecast_snow_";
-    private final static String   FORECAST_TEMP_TAG             = "forecast_temp_";
-    private final static String   FORECAST_RAIN_TAG             = "forecast_rain_";
-
+    private static final String   TAG_DAY_FORECAST_PREFIX       = "day_forecast_";
+    private static final String   TAG_CITY_PREFIX               = "city_";
     private static String CHAR_SEPARATOR;
-
-    private final ScheduledExecutorService weatherScheduler = Executors.newScheduledThreadPool(2);
-    private final Handler                  handler          = new Handler();
-    private GestureDetector citySwitchGestureDetector;
-    private int             PRIMARY_COLOR;
-    private int             SECONDARY_COLOR;
-    private Integer         currentCityId;
-    private Properties      weatherIcoProperties;
-    private Properties      weatherUnitsProperties;
-    private Map<Integer, AccuWeather> citiesWeather          = new LinkedHashMap<>();
-    private Map<Integer, View>        cityViews              = new HashMap<>();
-    private UnitTempEnum              currentTempUnitDisplay = UnitTempEnum.CELCIUS;
 
     static {
         final NumberFormat nf = NumberFormat.getInstance();
@@ -91,6 +71,16 @@ public class MainActivity extends Activity {
             CHAR_SEPARATOR = "\\" + CHAR_SEPARATOR;
         }
     }
+
+    private final ScheduledExecutorService weatherScheduler = Executors.newScheduledThreadPool(2);
+    private final Handler                  handler          = new Handler();
+    private GestureDetector citySwitchGestureDetector;
+    private int             PRIMARY_COLOR;
+    private int             SECONDARY_COLOR;
+    private Properties      weatherIcoProperties;
+    private Properties      weatherUnitsProperties;
+    private Map<Integer, AccuWeather> citiesWeather          = new LinkedHashMap<>();
+    private UnitTempEnum              currentTempUnitDisplay = UnitTempEnum.CELCIUS;
 
     /**
      * Get all the views which matches the given Tag recursively
@@ -120,62 +110,12 @@ public class MainActivity extends Activity {
         return allViews;
     }
 
-    /**
-     * Get all the views which matches the given Tag recursively
-     *
-     * @param root parent view. for e.g. Layouts
-     * @param tag  tag to look for
-     * @return List of views
-     */
-    public static View findViewWithTagRecursively(ViewGroup root, Object tag) {
-
-        View result = null;
-        final int childCount = root.getChildCount();
-        for(int i = 0; i < childCount; i++) {
-            final View childView = root.getChildAt(i);
-
-            if(childView instanceof ViewGroup) {
-                result = findViewWithTagRecursively((ViewGroup) childView,
-                                                    tag);
-            }
-
-            if(result == null) {
-                final Object tagView = childView.getTag();
-                if(tagView != null && tagView.equals(tag)) {
-                    return childView;
-                }
-            } else {
-                return result;
-            }
-        }
-
-        return result;
+    private static String getDayForecastTag(int idx) {
+        return TAG_DAY_FORECAST_PREFIX + idx;
     }
 
-    @NonNull
-    public static Optional<View> findViewByIdRecursively(@NonNull View rootView,
-                                                         @IdRes int viewId) {
-        List<ViewGroup> searchList = new ArrayList<>();
-
-        if(rootView instanceof ViewGroup) {
-            searchList.add((ViewGroup) rootView);
-        }
-
-        while(searchList.size() != 0) {
-            ViewGroup groupToCheck = searchList.get(0);
-            int childCount = groupToCheck.getChildCount();
-            for(int i = 0; i < childCount; i++) {
-                View child = groupToCheck.getChildAt(i);
-                if(child.getId() == viewId) {
-                    return Optional.of(child);
-                } else if(child instanceof ViewGroup) {
-                    searchList.add((ViewGroup) child);
-                }
-            }
-            searchList.remove(0);
-        }
-
-        return Optional.empty();
+    private static String getCityViewTag(int idx) {
+        return TAG_CITY_PREFIX + idx;
     }
 
     @Override
@@ -196,25 +136,10 @@ public class MainActivity extends Activity {
         weatherUnitsProperties = ContextLoader.getProperties(getApplicationContext(),
                                                              R.raw.units);
 
-        final Properties citiesProperties = ContextLoader.getProperties(getApplicationContext(),
-                                                                        R.raw.cities);
-
-        citiesProperties.keySet()
-                .stream()
-                .forEach(id -> {
-                    final AccuWeather weather = new AccuWeather();
-                    weather.id = Integer.valueOf((String) id);
-                    weather.name = citiesProperties.getProperty((String) id);
-
-                    citiesWeather.put(weather.id,
-                                      weather);
-
-                    addCityView(weather.id);
-                });
-
-        // Change temperature unit on tap
+        initCityWeathers();
 
         /**
+         // Change temperature unit on tap
          findViewById(R.id.cTempsValueLayout).setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View view) {
         currentTempUnitDisplay = UnitTempEnum.next(currentTempUnitDisplay);
@@ -232,6 +157,26 @@ public class MainActivity extends Activity {
 
     }
 
+    private void initCityWeathers() {
+
+        final Properties citiesProperties = ContextLoader.getProperties(getApplicationContext(),
+                                                                        R.raw.cities);
+
+        citiesProperties.keySet()
+                .stream()
+                .forEach(id -> {
+                    final AccuWeather weather = new AccuWeather();
+                    weather.id = Integer.valueOf((String) id);
+                    weather.name = citiesProperties.getProperty((String) id);
+
+                    citiesWeather.put(weather.id,
+                                      weather);
+
+                    addCityView(weather.id);
+                });
+
+    }
+
     /**
      * Start view updates
      */
@@ -240,27 +185,17 @@ public class MainActivity extends Activity {
         // Get current and forecast weather for all cities
         weatherScheduler.scheduleAtFixedRate(() -> {
 
-                                                 for(Integer cityID : citiesWeather.keySet()) {
+                                                 citiesWeather.values()
+                                                         .stream()
+                                                         .forEach(weather -> {
 
-                                                     final com.blind.wakemeup.weather.accu.model.AccuWeather weather = citiesWeather.get(cityID);
+                                                             updateWeatherData(weather);
 
-                                                     if(!true) {
-                                                         weather.current = AccuWeatherService.getCurrentSample(cityID,
-                                                                                                               getApplicationContext());
-                                                         weather.forecast = AccuWeatherService.getDailyForecastSample(cityID,
-                                                                                                                      getApplicationContext());
-                                                         weather.hourly = AccuWeatherService.getHourlyForecastSample(cityID,
-                                                                                                                     getApplicationContext());
-                                                     } else {
-                                                         weather.current = AccuWeatherService.getCurrent(cityID);
-                                                         weather.forecast = AccuWeatherService.getDailyForecast(cityID);
-                                                         weather.hourly = AccuWeatherService.getHourlyForecast(cityID);
-                                                     }
-
-                                                     // Update view in new thread
-                                                     handler.post(() -> updateView(weather));
-
-                                                 }
+                                                             // Update view in new thread
+                                                             final ViewGroup cityWeatherView = findViewById(R.id.citiesLayout).findViewWithTag(getCityViewTag(weather.id));
+                                                             handler.post(() -> updateView(cityWeatherView,
+                                                                                           weather));
+                                                         });
 
                                              },
                                              0,
@@ -274,32 +209,30 @@ public class MainActivity extends Activity {
                                                 TimeUnit.SECONDS);
     }
 
-    /**
-     * Set selected city from id.
-     * @param id the id of the city to select.
-     */
-    /**
-     private void setCurrentCity(int id) {
-
-     if(currentCityId == null || currentCityId != id) {
-     if(currentCityId != null) {
-     applyButtonSelectionStyle((Button) findViewById(currentCityId), false);
-     }
-     applyButtonSelectionStyle((Button) findViewById(id), true);
-     }
-
-     currentCityId = id;
-     updateView(citiesWeather.get(currentCityId));
-
-     }
-     **/
+    private void updateWeatherData(final AccuWeather weather) {
+        if(MOK_API) {
+            weather.current = AccuWeatherService.getCurrentSample(weather.id,
+                                                                  getApplicationContext());
+            weather.forecast = AccuWeatherService.getDailyForecastSample(weather.id,
+                                                                         getApplicationContext());
+            weather.hourly = AccuWeatherService.getHourlyForecastSample(weather.id,
+                                                                        getApplicationContext());
+        } else {
+            weather.current = AccuWeatherService.getCurrent(weather.id);
+            weather.forecast = AccuWeatherService.getDailyForecast(weather.id);
+            weather.hourly = AccuWeatherService.getHourlyForecast(weather.id);
+        }
+    }
 
     /**
      * Update the view with weather data.
      *
      * @param weather full weather data. Do nothing if <code>null</code>.
      */
-    protected void updateView(final AccuWeather weather) {
+    protected void updateView(final ViewGroup root, final AccuWeather weather) {
+
+        Log.d(LOG_TAG,
+              "Update weather [city:" + weather.id + "][root:" + root.getTag() + "]");
 
         if(weather == null || weather.current == null || weather.forecast == null) {
             return;
@@ -307,44 +240,53 @@ public class MainActivity extends Activity {
 
         final DailyForecast dailyForecast = getToday(weather.forecast);
 
-        final ViewGroup cityWeatherView = findViewById(weather.id);
-        if(cityWeatherView == null) {
-            return;
-        }
-
-        final String temp = getPrintableTemp(weather.current.temperature.metric.value,
-                                             1);
-        final String[] currentTempValue = temp.substring(0,
-                                                         temp.length() - 1)
-                .split(CHAR_SEPARATOR);
-        if(currentTempValue != null && currentTempValue.length >= 2) {
-            ((TextView) cityWeatherView.findViewById(R.id.tempValue)).setText(currentTempValue[0]);
-            ((TextView) cityWeatherView.findViewById(R.id.tempDecimalValue)).setText("." + currentTempValue[1]);
-        }
-        ((TextView) cityWeatherView.findViewById(R.id.tempUnit)).setText(currentTempUnitDisplay.toString());
-        ((TextView) cityWeatherView.findViewById(R.id.tempMaxValue)).setText(getPrintableTemp(dailyForecast.temperature.maximum.value,
-                                                                                              0));
-        ((TextView) cityWeatherView.findViewById(R.id.tempMinValue)).setText(getPrintableTemp(dailyForecast.temperature.minimum.value,
-                                                                                              0));
-        ((TextView) cityWeatherView.findViewById(R.id.tempFeelValue)).setText(getPrintableTemp(weather.current.realFeelTemperature.metric.value,
-                                                                                               0));
-        ((TextView) cityWeatherView.findViewById(R.id.conditionDesc)).setText(weather.current.weatherText.toUpperCase());
-        ((ImageView) cityWeatherView.findViewById(R.id.conditionIco)).setImageResource(getWeatherIconFromIconId(weather.current.weatherIcon,
-                                                                                                                ""));
-
-        updateRainValue(cityWeatherView,
+        updateTempValue(root,
+                        weather,
                         dailyForecast);
-        updateSnowValue(cityWeatherView,
+
+        ((TextView) root.findViewById(R.id.conditionDesc)).setText(weather.current.weatherText.toUpperCase());
+
+        ((ImageView) root.findViewById(R.id.conditionIco)).setImageResource(getWeatherIconFromIconId(weather.current.weatherIcon,
+                                                                                                     ""));
+
+        updateRainValue(root,
                         dailyForecast);
-        updateHourlyForecast(cityWeatherView,
+        updateSnowValue(root,
+                        dailyForecast);
+        updateHourlyForecast(root,
                              weather.hourly);
 
+        final ViewGroup dayForecastLayout = root.findViewById(R.id.days_forecast);
         for(int i = 0; i < weather.forecast.dailyForecasts.size(); i++) {
-            updateForecast(cityWeatherView,
+            updateForecast(dayForecastLayout,
                            weather.forecast.dailyForecasts.get(i),
                            i);
         }
 
+    }
+
+    private void updateTempValue(final ViewGroup root,
+                                 final AccuWeather weather,
+                                 DailyForecast dailyForecast) {
+
+        final String temp = getPrintableTemp(weather.current.temperature.metric.value,
+                                             1);
+
+        final String[] currentTempValue = temp.substring(0,
+                                                         temp.length() - 1)
+                .split(CHAR_SEPARATOR);
+
+        if(currentTempValue != null && currentTempValue.length >= 2) {
+            ((TextView) root.findViewById(R.id.tempValue)).setText(currentTempValue[0]);
+            ((TextView) root.findViewById(R.id.tempDecimalValue)).setText("." + currentTempValue[1]);
+        }
+        ((TextView) root.findViewById(R.id.tempUnit)).setText(currentTempUnitDisplay.toString());
+        ((TextView) root.findViewById(R.id.tempMaxValue)).setText(getPrintableTemp(dailyForecast.temperature.maximum.value,
+                                                                                   0));
+        ((TextView) root.findViewById(R.id.tempMinValue)).setText(getPrintableTemp(dailyForecast.temperature.minimum.value,
+                                                                                   0));
+        ((TextView) root.findViewById(R.id.tempFeelValue)).setText(getPrintableTemp(weather.current.realFeelTemperature.metric.value,
+                                                                                    0));
     }
 
     /**
@@ -444,21 +386,7 @@ public class MainActivity extends Activity {
         final ViewGroup cityView = (ViewGroup) LayoutInflater.from(getApplicationContext())
                 .inflate(R.layout.weather,
                          null);
-        cityView.setId(id);
-
-        cityViews.put(id,
-                      cityView);
-
-        /**
-         applyButtonSelectionStyle(button, false);
-
-         button.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        setCurrentCity(id);
-        }
-        });
-         */
-
+        cityView.setTag(getCityViewTag(id));
         root.addView(cityView);
 
         initTempChart(cityView);
@@ -468,8 +396,6 @@ public class MainActivity extends Activity {
                 .setOnClickListener(view -> {
                     final android.widget.ViewFlipper viewFlipper = cityView.findViewById(com.blind.wakemeup.R.id.currentWeatherViewFlipper);
                     viewFlipper.showNext();
-                    viewFlipper.findViewById(com.blind.wakemeup.R.id.tempChart)
-                            .animate();
                 });
     }
 
@@ -518,53 +444,20 @@ public class MainActivity extends Activity {
      *
      * @param idx
      */
-    public void addForecast(final View root, int idx) {
+    public ViewGroup addForecast(final ViewGroup root, int idx) {
 
-        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                                               LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER;
+        Log.d(LOG_TAG,
+              "Add forecast [root:" + root.getId() + "][idx:" + idx + "]");
 
-        final TextView dateView = new TextView(this);
-        dateView.setTag(FORECAST_DAY_TAG + idx);
-        dateView.setLayoutParams(params);
-        dateView.setTextColor(PRIMARY_COLOR);
-        dateView.setTextSize(30);
+        final ViewGroup dayView = (ViewGroup) LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.day_forecast,
+                         null);
 
-        final ImageView forecastIcon = new ImageView(this);
-        forecastIcon.setTag(FORECAST_ICO_TAG + idx);
-        forecastIcon.setLayoutParams(params);
+        dayView.setTag(getDayForecastTag(idx));
 
-        final LinearLayout forecastView = new LinearLayout(this);
-        forecastView.setOrientation(LinearLayout.VERTICAL);
-        forecastView.addView(dateView);
-        forecastView.addView(forecastIcon);
+        root.addView(dayView);
 
-        /**
-         final ViewGroup tempView = buildForecastValueView(this, R.drawable.small_temp_value, FORECAST_TEMP_TAG + idx);
-         final ViewGroup rainView = buildForecastValueView(this, R.drawable.small_rain_value, FORECAST_RAIN_TAG + idx);
-         final ViewGroup snowView = buildForecastValueView(this, R.drawable.small_snow_value, FORECAST_SNOW_TAG + idx);
-
-         forecastView.addView(tempView);
-         forecastView.addView(rainView);
-         forecastView.addView(snowView);
-         **/
-
-        forecastView.setPadding(20,
-                                0,
-                                0,
-                                0);
-
-        // ---
-
-        final ViewGroup viewGpoup = root.findViewById(R.id.forecastLayout);
-        FlexboxLayout.LayoutParams lp = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.MATCH_PARENT,
-                                                                       FlexboxLayout.LayoutParams.MATCH_PARENT);
-        lp.setFlexGrow(1);
-        lp.setAlignSelf(AlignSelf.CENTER);
-
-        forecastView.setLayoutParams(lp);
-
-        viewGpoup.addView(forecastView);
+        return dayView;
 
     }
 
@@ -580,52 +473,31 @@ public class MainActivity extends Activity {
             return;
         }
 
-        final ViewGroup forecastLayout = root.findViewById(R.id.forecastLayout);
-
-        if(forecastLayout.findViewWithTag(FORECAST_ICO_TAG + idx) == null) {
-            addForecast(root,
-                        idx);
+        ViewGroup dayForecastLayout = root.findViewWithTag(getDayForecastTag(idx));
+        if(dayForecastLayout == null) {
+            dayForecastLayout = addForecast(root,
+                                            idx);
         }
 
-        final ImageView conditions = forecastLayout.findViewWithTag(FORECAST_ICO_TAG + idx);
-        if(conditions != null) {
-            conditions.setImageResource(getWeatherIconFromIconId(forecast.day.icon,
-                                                                 "small_"));
-        }
+        Log.d(LOG_TAG,
+              "Update forecast [forecast_view:" + dayForecastLayout.getTag() + "][idx:" + idx + "]");
 
-        final TextView date = forecastLayout.findViewWithTag(FORECAST_DAY_TAG + idx);
-        if(date != null) {
-            date.setText(getForecastDay(forecast.date));
-        }
+        ((TextView) dayForecastLayout.findViewById(R.id.dayForecastDate)).setText(new DateTime(forecast.date).toString("E"));
 
-        final TextView temp = (TextView) findViewWithTagRecursively(forecastLayout,
-                                                                    FORECAST_TEMP_TAG + idx);
-        if(temp != null) {
-            temp.setText(getPrintableTemp(forecast.temperature.maximum.value,
-                                          0));
-        }
+        ((ImageView) dayForecastLayout.findViewById(R.id.dayCondition)).setImageResource(getWeatherIconFromIconId(forecast.day.icon,
+                                                                                                                  "small_"));
+        ((TextView) dayForecastLayout.findViewById(R.id.dayForecastTemp)).setText(getPrintableTemp(forecast.temperature.maximum.value,
+                                                                                                   0));
+        ((TextView) dayForecastLayout.findViewById(R.id.dayForecastRain)).setText(String.valueOf(forecast.day.rainProbability) + "%");
+        ((TextView) dayForecastLayout.findViewById(R.id.dayForecastSnow)).setText(String.valueOf(forecast.day.snowProbability) + "%");
 
-        final TextView rain = (TextView) findViewWithTagRecursively(forecastLayout,
-                                                                    FORECAST_RAIN_TAG + idx);
-        if(rain != null) {
-            rain.setText(String.valueOf(forecast.day.rainProbability) + "%");
-        }
-
-        final TextView snow = (TextView) findViewWithTagRecursively(forecastLayout,
-                                                                    FORECAST_SNOW_TAG + idx);
-        if(snow != null) {
-            snow.setText(String.valueOf(forecast.day.snowProbability) + "%");
-        }
-    }
-
-    private String getForecastDay(String forecastDate) {
-        return new DateTime(forecastDate).toString("E");
     }
 
     private void initTempChart(ViewGroup root) {
 
-        final LineChart chart = (LineChart) findViewByIdRecursively(root,
-                                                                    R.id.tempChart).get();
+        final LineChart chart = (LineChart) ViewUtils.findViewByIdRecursively(root,
+                                                                              R.id.tempChart)
+                .get();
         chart.setAutoScaleMinMaxEnabled(false);
 
         final XAxis xAxis = chart.getXAxis();
@@ -658,8 +530,9 @@ public class MainActivity extends Activity {
 
     private void initValueChart(ViewGroup root) {
 
-        final LineChart chart = (LineChart) findViewByIdRecursively(root,
-                                                                    R.id.valuesChart).get();
+        final LineChart chart = (LineChart) ViewUtils.findViewByIdRecursively(root,
+                                                                              R.id.valuesChart)
+                .get();
         chart.setAutoScaleMinMaxEnabled(false);
 
         final XAxis xAxis = chart.getXAxis();
@@ -733,14 +606,15 @@ public class MainActivity extends Activity {
                                                     "");
         dataSet.setDrawCircleHole(false);
         dataSet.setDrawCircles(false);
-        dataSet.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) ->  new org.joda.time.DateTime(forecasts.forecast.get((int) entry.getX()).dateTime).getHourOfDay() + ":00");
+        dataSet.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> new org.joda.time.DateTime(forecasts.forecast.get((int) entry.getX()).dateTime).getHourOfDay() + ":00");
         dataSet.setLineWidth(0f);
         dataSet.setLineWidth(0f);
         dataSet.setColor(Color.argb(0,
                                     0,
                                     0,
                                     0));
-        dataSet.setValueTypeface(Typeface.create(dataSet.getValueTypeface(), Typeface.BOLD));
+        dataSet.setValueTypeface(Typeface.create(dataSet.getValueTypeface(),
+                                                 Typeface.BOLD));
         return dataSet;
 
     }
@@ -752,14 +626,14 @@ public class MainActivity extends Activity {
         }
 
         final LineChart tempChart = root.findViewById(R.id.tempChart);
-//        tempChart.getXAxis()
-//                .setValueFormatter((value, axis) -> {
-//                    String ret = "";
-//                    if(forecasts.forecast != null && forecasts.forecast.size() >= value) {
-//                        ret = new org.joda.time.DateTime(forecasts.forecast.get((int) value).dateTime).getHourOfDay() + ":00";
-//                    }
-//                    return ret;
-//                });
+        //        tempChart.getXAxis()
+        //                .setValueFormatter((value, axis) -> {
+        //                    String ret = "";
+        //                    if(forecasts.forecast != null && forecasts.forecast.size() >= value) {
+        //                        ret = new org.joda.time.DateTime(forecasts.forecast.get((int) value).dateTime).getHourOfDay() + ":00";
+        //                    }
+        //                    return ret;
+        //                });
 
         /* float maxTemp = (float) forecasts.forecast.stream()
                 .mapToDouble(value -> value.temperature.value)
@@ -802,7 +676,8 @@ public class MainActivity extends Activity {
 
         }.buildData());
 
-        valueSets.add(buildHourForecastChart(forecasts, 7));
+        valueSets.add(buildHourForecastChart(forecasts,
+                                             7));
 
         valuesChart.setData(new LineData(valueSets));
         valuesChart.invalidate(); // refresh
@@ -841,46 +716,6 @@ public class MainActivity extends Activity {
 
         dataSet.setFillColor(color);
         return dataSet;
-    }
-
-    /**
-     * Build a view to display one data of a weather forecast. Contains an icon and a value.
-     *
-     * @param context  current app. context.
-     * @param icoId    the id of the icon to display.
-     * @param valueTag the tag of the data displayed.
-     * @return the view.
-     */
-    private ViewGroup buildForecastValueView(final Context context,
-                                             final int icoId,
-                                             final String valueTag) {
-
-        final ImageView ico = new ImageView(context);
-        ico.setImageResource(icoId);
-
-        final TextView value = new TextView(context);
-        value.setTag(valueTag);
-        value.setTextColor(PRIMARY_COLOR);
-        value.setTextSize(20);
-        value.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-
-        final LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.HORIZONTAL);
-        layout.addView(ico);
-        layout.addView(value);
-
-        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                                               LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.START;
-        params.topMargin = 5;
-
-        ico.setLayoutParams(params);
-        layout.setLayoutParams(params);
-
-        params.leftMargin = 5;
-        value.setLayoutParams(params);
-
-        return layout;
     }
 
 }

@@ -6,7 +6,6 @@ import com.blind.wakemeup.weather.accu.model.hourlyforecast.AccuWeatherHourlyFor
 import com.blind.wakemeup.weather.accu.model.hourlyforecast.HourlyForecast;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,6 +35,10 @@ public abstract class ConnectionLineBuilder<E> {
 
         E previousData = null;
         List<Entry> connectorEntries = null;
+
+        Integer idxStart = null;
+
+        int lastIdx = forecasts.forecast.size() - 1;
         for(int i = 0; i < forecasts.forecast.size(); i++) {
 
             final HourlyForecast forecast = forecasts.forecast.get(i);
@@ -49,43 +52,42 @@ public abstract class ConnectionLineBuilder<E> {
                                           shift,
                                           forecast));
 
-                // ---
-
-                if(connectorEntries != null) {
-                    connectorEntries.add(new Entry(i - SPACE_FROM_VALUE,
-                                                   shift));
-                    ret.add(buildFakeLineDataSet(connectorEntries));
-                    connectorEntries = null;
+                // connect data with a line
+                if(idxStart != null) {
+                    ret.add(addConnectionLine(idxStart,
+                                              i,
+                                              false));
                 }
-
-            } else {
-
-                boolean isLastEntry = i == forecasts.forecast.size() - 1;
-
-                if(connectorEntries == null) {
-                    connectorEntries = new ArrayList<>();
-
-                    float x = i - 1 + (isLastEntry
-                             ? 0
-                             : SPACE_FROM_VALUE);
-                    final Entry entry = new Entry(x,
-                                                  shift);
-                    connectorEntries.add(entry);
-                } else if (isLastEntry) {
-                    final Entry entry = new Entry(i,
-                                                  shift);
-                    connectorEntries.add(entry);
-                    ret.add(buildFakeLineDataSet(connectorEntries));
-                }
-
+                idxStart = i;
 
             }
 
         }
 
+        // end previous unclosed line
+        if(idxStart != null) {
+            ret.add(addConnectionLine(idxStart,
+                                      lastIdx,
+                                      true));
+        }
+
         ret.add(buildLineDataSet(values));
 
         return ret;
+    }
+
+    private LineDataSet addConnectionLine(Integer idxStart, Integer idxEnd, boolean isLastIdx) {
+        final List<Entry> connectorEntries = new ArrayList<>();
+        connectorEntries.add(new Entry(idxStart + SPACE_FROM_VALUE,
+                                       shift));
+
+        connectorEntries.add(new Entry(idxEnd - (isLastIdx
+                                                 ? 0
+                                                 : SPACE_FROM_VALUE),
+                                       shift));
+
+        return buildFakeLineDataSet(connectorEntries);
+
     }
 
     protected LineDataSet buildFakeLineDataSet(List<Entry> entries) {
